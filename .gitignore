@@ -1,0 +1,11 @@
+build/
+shell/build/
+*.user
+*.user.*
+*.swp
+*.swo
+.cache/
+compile_commands.json
+CMakeFiles/
+CMakeCache.txt
+.ninja_*

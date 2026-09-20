@@ -10,11 +10,12 @@ Window {
     minimumWidth: 900
     minimumHeight: 600
     visible: true
-    color: "#08090d"
+    color: "#070A10"
     title: "WINUX11"
 
     property bool startOpen: false
     property bool searchOpen: false
+    property bool quickSettingsOpen: false
 
     function launch(command) {
         if (command === "terminal")
@@ -26,15 +27,12 @@ Window {
 
         startOpen = false
         searchOpen = false
+        quickSettingsOpen = false
     }
 
-    Desktop {
-        anchors.fill: parent
-    }
+    Desktop { anchors.fill: parent }
 
-    WindowManager {
-        id: windowManager
-    }
+    WindowManager { id: windowManager }
 
     StartMenu {
         id: startMenu
@@ -43,25 +41,15 @@ Window {
         anchors.bottom: taskbar.top
         anchors.bottomMargin: 8
         open: root.startOpen
-
-        onSearchRequested: {
-            root.startOpen = false
-            root.searchOpen = true
-        }
-
-        onLaunch: function(command) {
-            root.launch(command)
-        }
+        onSearchRequested: { root.startOpen = false; root.searchOpen = true }
+        onLaunch: function(command) { root.launch(command) }
     }
 
     Search {
         id: search
         z: 600
         open: root.searchOpen
-
-        onLaunch: function(command) {
-            root.launch(command)
-        }
+        onLaunch: function(command) { root.launch(command) }
     }
 
     Taskbar {
@@ -69,20 +57,12 @@ Window {
         z: 1000
         startOpen: root.startOpen
         searchOpen: root.searchOpen
+        quickSettingsOpen: root.quickSettingsOpen
 
-        onStartClicked: {
-            root.searchOpen = false
-            root.startOpen = !root.startOpen
-        }
-
-        onSearchClicked: {
-            root.startOpen = false
-            root.searchOpen = !root.searchOpen
-        }
-
-        onLaunch: function(command) {
-            root.launch(command)
-        }
+        onStartClicked: { root.quickSettingsOpen = false; root.searchOpen = false; root.startOpen = !root.startOpen }
+        onSearchClicked: { root.quickSettingsOpen = false; root.startOpen = false; root.searchOpen = !root.searchOpen }
+        onQuickSettingsClicked: { root.startOpen = false; root.searchOpen = false; root.quickSettingsOpen = !root.quickSettingsOpen }
+        onLaunch: function(command) { root.launch(command) }
     }
 
     Item {
@@ -94,17 +74,17 @@ Window {
             if (event.key === Qt.Key_Escape) {
                 root.startOpen = false
                 root.searchOpen = false
+                root.quickSettingsOpen = false
                 event.accepted = true
-            } else if ((event.modifiers & Qt.MetaModifier) &&
-                       event.key === Qt.Key_E) {
+            } else if ((event.modifiers & Qt.MetaModifier) && event.key === Qt.Key_E) {
                 root.launch("explorer")
                 event.accepted = true
-            } else if ((event.modifiers & Qt.MetaModifier) &&
-                       event.key === Qt.Key_R) {
+            } else if ((event.modifiers & Qt.MetaModifier) && event.key === Qt.Key_R) {
                 root.launch("terminal")
                 event.accepted = true
             } else if (event.key === Qt.Key_Meta) {
                 root.searchOpen = false
+                root.quickSettingsOpen = false
                 root.startOpen = !root.startOpen
                 event.accepted = true
             }

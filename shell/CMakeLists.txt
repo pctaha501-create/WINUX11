@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(WINUX11Shell VERSION 0.3 LANGUAGES CXX)
+project(WINUX11Shell VERSION 0.4 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -30,6 +30,20 @@ qt_add_qml_module(WINUX11Shell
         src/search/Search.qml
         src/windows/WindowManager.qml
         src/shell/ShellState.qml
+    RESOURCES
+        assets/icons/start.svg
+        assets/icons/search.svg
+        assets/icons/explorer.svg
+        assets/icons/browser.svg
+        assets/icons/terminal.svg
+        assets/icons/network.svg
+        assets/icons/volume.svg
+        assets/icons/battery.svg
+        assets/icons/bluetooth.svg
+        assets/icons/moon.svg
+        assets/icons/focus.svg
+        assets/icons/settings.svg
+        assets/icons/notifications.svg
 )
 
 target_link_libraries(WINUX11Shell PRIVATE

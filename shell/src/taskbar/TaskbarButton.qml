@@ -1,31 +1,31 @@
 import QtQuick
+import WINUX11 1.0
 
 Rectangle {
     id: root
 
-    property string iconText: ""
+    property string iconSource: ""
     property string label: ""
     property bool active: false
     signal clicked()
 
-    width: 48
-    height: 48
-    radius: 14
-
-    color: mouse.pressed ? "#354052"
-         : mouse.containsMouse ? "#252c38"
-         : root.active ? "#202936"
+    width: 42
+    height: 42
+    radius: 13
+    color: mouse.pressed ? "#3C485D"
+         : mouse.containsMouse ? "#2A3445"
+         : root.active ? "#27364D"
          : "transparent"
 
-    Behavior on color {
-        ColorAnimation { duration: 110 }
-    }
+    Behavior on color { ColorAnimation { duration: 120 } }
 
-    Text {
+    Image {
         anchors.centerIn: parent
-        text: root.iconText
-        color: "#f5f7fa"
-        font.pixelSize: 21
+        width: 22
+        height: 22
+        source: root.iconSource
+        fillMode: Image.PreserveAspectFit
+        smooth: true
     }
 
     Rectangle {
@@ -36,7 +36,13 @@ Rectangle {
         width: 5
         height: 3
         radius: 2
-        color: "#5b9cff"
+        color: Theme.accentBright
+    }
+
+    ToolTip {
+        visible: mouse.containsMouse && root.label.length > 0
+        text: root.label
+        delay: 550
     }
 
     MouseArea {

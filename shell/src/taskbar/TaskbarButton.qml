@@ -39,12 +39,6 @@ Rectangle {
         color: Theme.accentBright
     }
 
-    ToolTip {
-        visible: mouse.containsMouse && root.label.length > 0
-        text: root.label
-        delay: 550
-    }
-
     MouseArea {
         id: mouse
         anchors.fill: parent

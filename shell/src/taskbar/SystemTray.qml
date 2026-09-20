@@ -5,6 +5,7 @@ Item {
     id: root
 
     property bool panelOpen: false
+    property string currentTime: Qt.formatTime(new Date(), "HH:mm")
     signal panelToggled()
 
     width: 150
@@ -33,7 +34,7 @@ Item {
 
         Text {
             anchors.verticalCenter: parent.verticalCenter
-            text: Qt.formatTime(new Date(), "HH:mm")
+            text: root.currentTime
             color: Theme.textPrimary
             font.pixelSize: 12
             font.weight: Font.Medium
@@ -80,9 +81,12 @@ Item {
                 }
 
                 Rectangle {
-                    width: 40; height: 40; radius: 13
+                    width: 40
+                    height: 40
+                    radius: 13
                     color: "#1C2635"
-                    border.width: 1; border.color: "#28FFFFFF"
+                    border.width: 1
+                    border.color: "#28FFFFFF"
                     Text { anchors.centerIn: parent; text: "×"; color: Theme.textSecondary; font.pixelSize: 21 }
                     MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.panelToggled() }
                 }
@@ -91,7 +95,6 @@ Item {
             Row {
                 width: parent.width
                 spacing: 10
-
                 QuickTile { title: "Wi-Fi"; subtitle: "Connected"; iconSource: "qrc:/qt/qml/WINUX11/assets/icons/network.svg"; width: (parent.width - 10) / 2 }
                 QuickTile { title: "Bluetooth"; subtitle: "Off"; iconSource: "qrc:/qt/qml/WINUX11/assets/icons/bluetooth.svg"; width: (parent.width - 10) / 2 }
             }
@@ -99,7 +102,6 @@ Item {
             Row {
                 width: parent.width
                 spacing: 10
-
                 QuickTile { title: "Night light"; subtitle: "Off"; iconSource: "qrc:/qt/qml/WINUX11/assets/icons/moon.svg"; width: (parent.width - 10) / 2 }
                 QuickTile { title: "Focus"; subtitle: "Ready"; iconSource: "qrc:/qt/qml/WINUX11/assets/icons/focus.svg"; width: (parent.width - 10) / 2 }
             }
@@ -151,11 +153,7 @@ Item {
                 font.pixelSize: 12
             }
 
-            Rectangle {
-                width: parent.width
-                height: 1
-                color: "#18FFFFFF"
-            }
+            Rectangle { width: parent.width; height: 1; color: "#18FFFFFF" }
 
             Row {
                 width: parent.width
@@ -170,7 +168,7 @@ Item {
         interval: 1000
         running: true
         repeat: true
-        onTriggered: root.childrenChanged()
+        onTriggered: root.currentTime = Qt.formatTime(new Date(), "HH:mm")
     }
 
     component TrayButton: Rectangle {
@@ -178,7 +176,9 @@ Item {
         property string iconSource: ""
         property string label: ""
         signal clicked()
-        width: 32; height: 38; radius: 11
+        width: 32
+        height: 38
+        radius: 11
         color: mouse.containsMouse ? "#273245" : "transparent"
         Image { anchors.centerIn: parent; width: 17; height: 17; source: tray.iconSource }
         MouseArea { id: mouse; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: tray.clicked() }
@@ -188,9 +188,12 @@ Item {
         property string title: ""
         property string subtitle: ""
         property string iconSource: ""
-        width: 100; height: 76; radius: 17
+        width: 100
+        height: 76
+        radius: 17
         color: "#182435"
-        border.width: 1; border.color: "#30FFFFFF"
+        border.width: 1
+        border.color: "#30FFFFFF"
         Image { x: 12; y: 13; width: 20; height: 20; source: parent.iconSource }
         Text { x: 12; y: 42; text: parent.title; color: Theme.textPrimary; font.pixelSize: 12; font.weight: Font.Medium }
         Text { x: 12; y: 59; text: parent.subtitle; color: Theme.textMuted; font.pixelSize: 9 }
@@ -200,9 +203,12 @@ Item {
     component QuickAction: Rectangle {
         property string title: ""
         property string iconSource: ""
-        width: 100; height: 42; radius: 13
+        width: 100
+        height: 42
+        radius: 13
         color: "#14202F"
-        border.width: 1; border.color: "#25FFFFFF"
+        border.width: 1
+        border.color: "#25FFFFFF"
         Image { anchors.left: parent.left; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter; width: 16; height: 16; source: parent.iconSource }
         Text { anchors.left: parent.left; anchors.leftMargin: 36; anchors.verticalCenter: parent.verticalCenter; text: parent.title; color: Theme.textSecondary; font.pixelSize: 11 }
         MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor }

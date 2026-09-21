@@ -15,17 +15,20 @@ Item {
         spacing: 4
 
         TaskbarButton {
-            iconSource: "qrc:/qt/qml/WINUX11/assets/icons/network.svg"
+            iconSource: "../../assets/icons/network.svg"
+            label: "Wi-Fi"
             onClicked: root.panelToggled()
         }
 
         TaskbarButton {
-            iconSource: "qrc:/qt/qml/WINUX11/assets/icons/volume.svg"
+            iconSource: "../../assets/icons/volume.svg"
+            label: "Volume"
             onClicked: root.panelToggled()
         }
 
         TaskbarButton {
-            iconSource: "qrc:/qt/qml/WINUX11/assets/icons/settings.svg"
+            iconSource: "../../assets/icons/settings.svg"
+            label: "Settings"
             active: root.panelOpen
             onClicked: root.panelToggled()
         }
@@ -33,7 +36,7 @@ Item {
         Text {
             anchors.verticalCenter: parent.verticalCenter
             text: Qt.formatTime(new Date(), "HH:mm")
-            color: Theme.textPrimary
+            color: "#FFFFFF"
             font.pixelSize: 13
             font.weight: Font.Medium
 
@@ -68,7 +71,7 @@ Item {
             x: 22
             y: 20
             text: "Quick Settings"
-            color: Theme.textPrimary
+            color: "#FFFFFF"
             font.pixelSize: 20
             font.weight: Font.DemiBold
         }
@@ -77,7 +80,7 @@ Item {
             x: 22
             y: 50
             text: "System controls"
-            color: Theme.textMuted
+            color: "#FFFFFF"
             font.pixelSize: 12
         }
 
@@ -110,7 +113,7 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         width: 25
                         height: 25
-                        source: "qrc:/qt/qml/WINUX11/assets/icons/" + modelData.icon
+                        source: "../../assets/icons/" + modelData.icon
                         sourceSize: Qt.size(50, 50)
                     }
 
@@ -118,7 +121,7 @@ Item {
                         x: 53
                         anchors.verticalCenter: parent.verticalCenter
                         text: modelData.name
-                        color: Theme.textPrimary
+                        color: "#FFFFFF"
                         font.pixelSize: 13
                     }
 
@@ -143,7 +146,7 @@ Item {
             x: 22
             y: 300
             text: "Audio"
-            color: Theme.textMuted
+            color: "#FFFFFF"
             font.pixelSize: 12
         }
 
@@ -151,7 +154,7 @@ Item {
             x: 22
             y: 326
             text: audioService ? (audioService.muted ? "Muted" : audioService.volume + "%") : "40%"
-            color: Theme.textPrimary
+            color: "#FFFFFF"
             font.pixelSize: 26
             font.weight: Font.DemiBold
         }

@@ -6,7 +6,7 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.bottom: parent.bottom
-    height: 82
+    height: 70
 
     property bool startOpen: false
     property bool searchOpen: false
@@ -19,21 +19,35 @@ Item {
         id: bar
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 16
-        width: Math.min(parent.width - 32, 1180)
-        height: 60
-        radius: 20
+        anchors.bottomMargin: 10
+        width: Math.min(parent.width - 24, 1440)
+        height: 54
+        radius: 18
         glassColor: "#E50A0E15"
         borderColor: "#55FFFFFF"
         borderWidth: 1
 
+        // System controls stay on the left.
+        SystemTray {
+            id: systemTray
+            anchors.left: parent.left
+            anchors.leftMargin: 12
+            anchors.verticalCenter: parent.verticalCenter
+            width: 245
+            height: 44
+            panelOpen: root.quickSettingsOpen
+            onPanelToggled: root.quickSettingsOpen = !root.quickSettingsOpen
+        }
+
+        // App launcher icons stay centered.
         Row {
-            anchors.centerIn: parent
-            spacing: 10
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: 6
 
             TaskbarButton {
-                width: 50
-                height: 50
+                width: 44
+                height: 44
                 iconSource: "../../assets/icons/start.svg"
                 label: "Start"
                 active: root.startOpen
@@ -41,8 +55,8 @@ Item {
             }
 
             TaskbarButton {
-                width: 50
-                height: 50
+                width: 44
+                height: 44
                 iconSource: "../../assets/icons/search.svg"
                 label: "Search"
                 active: root.searchOpen
@@ -51,47 +65,33 @@ Item {
 
             Rectangle {
                 width: 1
-                height: 34
+                height: 28
                 anchors.verticalCenter: parent.verticalCenter
-                color: "#40FFFFFF"
+                color: "#35FFFFFF"
             }
 
             TaskbarButton {
-                width: 50
-                height: 50
+                width: 44
+                height: 44
                 iconSource: "../../assets/icons/explorer.svg"
                 label: "Explorer"
                 onClicked: root.launch("explorer")
             }
 
             TaskbarButton {
-                width: 50
-                height: 50
+                width: 44
+                height: 44
                 iconSource: "../../assets/icons/browser.svg"
                 label: "Browser"
                 onClicked: root.launch("browser")
             }
 
             TaskbarButton {
-                width: 50
-                height: 50
+                width: 44
+                height: 44
                 iconSource: "../../assets/icons/terminal.svg"
                 label: "Terminal"
                 onClicked: root.launch("terminal")
-            }
-
-            Rectangle {
-                width: 1
-                height: 34
-                anchors.verticalCenter: parent.verticalCenter
-                color: "#40FFFFFF"
-            }
-
-            SystemTray {
-                width: 290
-                height: 50
-                panelOpen: root.quickSettingsOpen
-                onPanelToggled: root.quickSettingsOpen = !root.quickSettingsOpen
             }
         }
     }

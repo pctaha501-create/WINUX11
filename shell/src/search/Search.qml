@@ -35,7 +35,7 @@ Item {
             x: 26
             y: 22
             text: "Search"
-            color: Theme.textPrimary
+            color: "#FFFFFF"
             font.pixelSize: 23
             font.weight: Font.DemiBold
         }
@@ -64,7 +64,7 @@ Item {
                 x: 52
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width - 68
-                color: Theme.textPrimary
+                color: "#FFFFFF"
                 selectionColor: Theme.accent
                 font.pixelSize: 16
                 focus: root.open
@@ -76,7 +76,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width - 68
                 text: "Type to search..."
-                color: Theme.textMuted
+                color: "#FFFFFF"
                 font.pixelSize: 16
                 visible: input.text.length === 0
                 clip: true
@@ -87,7 +87,7 @@ Item {
             x: 28
             y: 143
             text: input.text.length === 0 ? "Quick actions" : "Results"
-            color: Theme.textSecondary
+            color: "#FFFFFF"
             font.pixelSize: 13
         }
 
@@ -127,7 +127,7 @@ Item {
                         x: 55
                         y: 11
                         text: modelData.name
-                        color: Theme.textPrimary
+                        color: "#FFFFFF"
                         font.pixelSize: 14
                     }
 
@@ -135,7 +135,7 @@ Item {
                         x: 55
                         y: 34
                         text: modelData.desc
-                        color: Theme.textMuted
+                        color: "#FFFFFF"
                         font.pixelSize: 11
                     }
 

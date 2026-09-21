@@ -27,7 +27,7 @@ Item {
             x: 28
             y: 24
             text: "WINUX11"
-            color: Theme.textPrimary
+            color: "#FFFFFF"
             font.pixelSize: 25
             font.weight: Font.DemiBold
         }
@@ -36,7 +36,7 @@ Item {
             x: 30
             y: 57
             text: "Start"
-            color: Theme.textMuted
+            color: "#FFFFFF"
             font.pixelSize: 12
         }
 
@@ -63,7 +63,7 @@ Item {
                 x: 50
                 anchors.verticalCenter: parent.verticalCenter
                 text: "Search apps, files and settings"
-                color: Theme.textMuted
+                color: "#FFFFFF"
                 font.pixelSize: 14
             }
 
@@ -77,7 +77,7 @@ Item {
             x: 28
             y: 164
             text: "Pinned"
-            color: Theme.textSecondary
+            color: "#FFFFFF"
             font.pixelSize: 13
         }
 
@@ -125,7 +125,7 @@ Item {
                         x: 17
                         y: 62
                         text: modelData.name
-                        color: Theme.textPrimary
+                        color: "#FFFFFF"
                         font.pixelSize: 13
                     }
 

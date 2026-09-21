@@ -50,12 +50,10 @@ Window {
         anchors.bottom: taskbar.top
         anchors.bottomMargin: 14
         open: root.startOpen
-
         onSearchRequested: {
             root.startOpen = false
             root.searchOpen = true
         }
-
         onLaunch: function(command) {
             root.launch(command)
         }
@@ -95,6 +93,15 @@ Window {
 
         onQuickSettingsOpenChanged:
             root.quickSettingsOpen = taskbar.quickSettingsOpen
+    }
+
+    QuickSettings {
+        id: quickSettings
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.rightMargin: 16
+        anchors.bottomMargin: 82
+        open: root.quickSettingsOpen
     }
 
     Item {

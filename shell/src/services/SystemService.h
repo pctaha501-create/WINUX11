@@ -20,6 +20,7 @@ public:
     Q_INVOKABLE void toggleNetwork();
     Q_INVOKABLE void toggleBluetooth();
     Q_INVOKABLE void toggleNightLight(bool enabled);
+    Q_INVOKABLE void toggleFocus(bool enabled);
     Q_INVOKABLE void openSettings();
     Q_INVOKABLE void refresh();
 

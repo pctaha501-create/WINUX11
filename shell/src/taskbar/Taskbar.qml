@@ -6,7 +6,7 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.bottom: parent.bottom
-    height: 70
+    height: 82
 
     property bool startOpen: false
     property bool searchOpen: false
@@ -19,62 +19,77 @@ Item {
         id: bar
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 12
-        width: Math.min(parent.width - 48, 900)
-        height: 48
-        radius: 18
-        glassColor: "#E20A0E15"
-        borderColor: "#42FFFFFF"
+        anchors.bottomMargin: 16
+        width: Math.min(parent.width - 64, 980)
+        height: 60
+        radius: 20
+        glassColor: "#E50A0E15"
+        borderColor: "#55FFFFFF"
         borderWidth: 1
 
         Row {
             anchors.centerIn: parent
-            spacing: 5
+            spacing: 10
 
             TaskbarButton {
+                width: 50
+                height: 50
                 iconSource: "qrc:/qt/qml/WINUX11/assets/icons/start.svg"
+                label: "Start"
                 active: root.startOpen
                 onClicked: root.startClicked()
             }
 
             TaskbarButton {
+                width: 50
+                height: 50
                 iconSource: "qrc:/qt/qml/WINUX11/assets/icons/search.svg"
+                label: "Search"
                 active: root.searchOpen
                 onClicked: root.searchClicked()
             }
 
             Rectangle {
                 width: 1
-                height: 28
+                height: 34
                 anchors.verticalCenter: parent.verticalCenter
-                color: "#35FFFFFF"
+                color: "#40FFFFFF"
             }
 
             TaskbarButton {
+                width: 50
+                height: 50
                 iconSource: "qrc:/qt/qml/WINUX11/assets/icons/explorer.svg"
+                label: "Explorer"
                 onClicked: root.launch("explorer")
             }
 
             TaskbarButton {
+                width: 50
+                height: 50
                 iconSource: "qrc:/qt/qml/WINUX11/assets/icons/browser.svg"
+                label: "Browser"
                 onClicked: root.launch("browser")
             }
 
             TaskbarButton {
+                width: 50
+                height: 50
                 iconSource: "qrc:/qt/qml/WINUX11/assets/icons/terminal.svg"
+                label: "Terminal"
                 onClicked: root.launch("terminal")
             }
 
             Rectangle {
                 width: 1
-                height: 28
+                height: 34
                 anchors.verticalCenter: parent.verticalCenter
-                color: "#35FFFFFF"
+                color: "#40FFFFFF"
             }
 
             SystemTray {
-                width: 270
-                height: 42
+                width: 290
+                height: 50
                 panelOpen: root.quickSettingsOpen
                 onPanelToggled: root.quickSettingsOpen = !root.quickSettingsOpen
             }

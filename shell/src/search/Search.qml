@@ -13,89 +13,89 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: "#28030B10"
+        color: "#70000000"
         visible: root.open
     }
 
     GlassPanel {
-        width: 720
-        height: 520
+        width: 680
+        height: 500
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: 86
-        glassColor: "#F00C252E"
-        borderColor: "#A0B4EDF5"
-        scale: root.open ? 1 : 0.94
+        anchors.topMargin: 76
+        glassColor: "#F00A0E15"
+        borderColor: "#48FFFFFF"
+        scale: root.open ? 1 : 0.95
         opacity: root.open ? 1 : 0
 
-        Behavior on scale { NumberAnimation { duration: 230; easing.type: Easing.OutBack } }
-        Behavior on opacity { NumberAnimation { duration: 170 } }
+        Behavior on scale { NumberAnimation { duration: 190; easing.type: Easing.OutCubic } }
+        Behavior on opacity { NumberAnimation { duration: 140 } }
 
         Text {
-            x: 28
-            y: 24
+            x: 26
+            y: 22
             text: "Search"
             color: Theme.textPrimary
-            font.pixelSize: 24
+            font.pixelSize: 23
             font.weight: Font.DemiBold
         }
 
         Rectangle {
-            x: 28
-            y: 72
-            width: parent.width - 56
-            height: 60
-            radius: 18
-            color: "#233A515A"
+            x: 26
+            y: 66
+            width: parent.width - 52
+            height: 54
+            radius: 16
+            color: "#14000000"
             border.width: 1
-            border.color: "#65B8EAF2"
+            border.color: "#32FFFFFF"
 
             Image {
-                x: 18
+                x: 16
                 anchors.verticalCenter: parent.verticalCenter
-                width: 26
-                height: 26
+                width: 23
+                height: 23
                 source: "qrc:/qt/qml/WINUX11/assets/icons/search.svg"
+                sourceSize: Qt.size(46, 46)
             }
 
             TextInput {
                 id: input
-                x: 58
+                x: 52
                 anchors.verticalCenter: parent.verticalCenter
-                width: parent.width - 75
+                width: parent.width - 68
                 color: Theme.textPrimary
                 selectionColor: Theme.accent
-                font.pixelSize: 17
+                font.pixelSize: 16
                 focus: root.open
                 clip: true
             }
 
             Text {
-                x: 58
+                x: 52
                 anchors.verticalCenter: parent.verticalCenter
-                width: parent.width - 75
+                width: parent.width - 68
                 text: "Type to search..."
                 color: Theme.textMuted
-                font.pixelSize: 17
+                font.pixelSize: 16
                 visible: input.text.length === 0
                 clip: true
-                z: 1
             }
         }
 
         Text {
-            x: 30
-            y: 158
+            x: 28
+            y: 143
             text: input.text.length === 0 ? "Quick actions" : "Results"
             color: Theme.textSecondary
-            font.pixelSize: 14
+            font.pixelSize: 13
         }
 
         Column {
-            x: 28
-            y: 194
-            width: parent.width - 56
-            spacing: 10
+            x: 26
+            y: 176
+            width: parent.width - 52
+            spacing: 8
 
             Repeater {
                 model: [
@@ -108,32 +108,35 @@ Item {
                 delegate: Rectangle {
                     required property var modelData
                     width: parent.width
-                    height: 64
-                    radius: 16
-                    color: mouse.containsMouse ? "#2DFFFFFF" : "#152A4148"
+                    height: 62
+                    radius: 14
+                    color: mouse.containsMouse ? "#1CFFFFFF" : "#10000000"
+                    border.width: 1
+                    border.color: "#20FFFFFF"
 
                     Image {
-                        x: 15
+                        x: 14
                         anchors.verticalCenter: parent.verticalCenter
-                        width: 30
-                        height: 30
+                        width: 28
+                        height: 28
                         source: "qrc:/qt/qml/WINUX11/assets/icons/" + modelData.icon
+                        sourceSize: Qt.size(56, 56)
                     }
 
                     Text {
-                        x: 58
-                        y: 13
+                        x: 55
+                        y: 11
                         text: modelData.name
                         color: Theme.textPrimary
-                        font.pixelSize: 15
+                        font.pixelSize: 14
                     }
 
                     Text {
-                        x: 58
-                        y: 36
+                        x: 55
+                        y: 34
                         text: modelData.desc
-                        color: Theme.textSecondary
-                        font.pixelSize: 12
+                        color: Theme.textMuted
+                        font.pixelSize: 11
                     }
 
                     MouseArea {

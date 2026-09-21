@@ -3,8 +3,8 @@ import WINUX11 1.0
 
 Item {
     id: root
-    width: 190
-    height: 62
+    width: 270
+    height: 42
 
     property bool panelOpen: false
     signal panelToggled()
@@ -12,26 +12,21 @@ Item {
     Row {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 8
+        spacing: 4
 
         TaskbarButton {
-            width: 48
-            height: 48
             iconSource: "qrc:/qt/qml/WINUX11/assets/icons/network.svg"
             onClicked: root.panelToggled()
         }
 
         TaskbarButton {
-            width: 48
-            height: 48
             iconSource: "qrc:/qt/qml/WINUX11/assets/icons/volume.svg"
             onClicked: root.panelToggled()
         }
 
         TaskbarButton {
-            width: 48
-            height: 48
             iconSource: "qrc:/qt/qml/WINUX11/assets/icons/settings.svg"
+            active: root.panelOpen
             onClicked: root.panelToggled()
         }
 
@@ -39,7 +34,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             text: Qt.formatTime(new Date(), "HH:mm")
             color: Theme.textPrimary
-            font.pixelSize: 15
+            font.pixelSize: 13
             font.weight: Font.Medium
 
             Timer {
@@ -54,48 +49,48 @@ Item {
     GlassPanel {
         id: panel
         z: 100
-        width: 380
-        height: 440
+        width: 360
+        height: 410
         anchors.right: parent.right
         anchors.bottom: parent.top
-        anchors.bottomMargin: 14
-        glassColor: "#EE0D252E"
-        borderColor: "#99A9EAF4"
+        anchors.bottomMargin: 10
+        glassColor: "#F00A0E15"
+        borderColor: "#50FFFFFF"
         visible: root.panelOpen
         opacity: root.panelOpen ? 1 : 0
-        scale: root.panelOpen ? 1 : 0.88
+        scale: root.panelOpen ? 1 : 0.94
         transformOrigin: Item.BottomRight
 
-        Behavior on opacity { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
-        Behavior on scale { NumberAnimation { duration: 240; easing.type: Easing.OutBack } }
+        Behavior on opacity { NumberAnimation { duration: 150 } }
+        Behavior on scale { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
 
         Text {
-            x: 24
-            y: 22
+            x: 22
+            y: 20
             text: "Quick Settings"
             color: Theme.textPrimary
-            font.pixelSize: 22
+            font.pixelSize: 20
             font.weight: Font.DemiBold
         }
 
         Text {
-            x: 24
-            y: 56
-            text: "Water Flow controls"
-            color: Theme.textSecondary
-            font.pixelSize: 13
+            x: 22
+            y: 50
+            text: "System controls"
+            color: Theme.textMuted
+            font.pixelSize: 12
         }
 
         Grid {
-            x: 24
-            y: 98
+            x: 22
+            y: 88
             columns: 2
-            rowSpacing: 12
-            columnSpacing: 12
+            rowSpacing: 10
+            columnSpacing: 10
 
             Repeater {
                 model: [
-                    {name:"Wi-Fi", icon:"network.svg"},
+                    {name:"Network", icon:"network.svg"},
                     {name:"Bluetooth", icon:"bluetooth.svg"},
                     {name:"Night light", icon:"moon.svg"},
                     {name:"Focus", icon:"focus.svg"}
@@ -103,28 +98,28 @@ Item {
 
                 delegate: Rectangle {
                     required property var modelData
-                    width: 158
-                    height: 86
-                    radius: 18
-                    color: mouse.containsMouse ? "#2BFFFFFF" : "#182D4650"
+                    width: 153
+                    height: 72
+                    radius: 15
+                    color: mouse.containsMouse ? "#22FFFFFF" : "#14000000"
                     border.width: 1
-                    border.color: "#55B8EAF2"
+                    border.color: "#28FFFFFF"
 
                     Image {
-                        x: 16
+                        x: 15
                         anchors.verticalCenter: parent.verticalCenter
-                        width: 30
-                        height: 30
+                        width: 25
+                        height: 25
                         source: "qrc:/qt/qml/WINUX11/assets/icons/" + modelData.icon
-                        fillMode: Image.PreserveAspectFit
+                        sourceSize: Qt.size(50, 50)
                     }
 
                     Text {
-                        x: 58
+                        x: 53
                         anchors.verticalCenter: parent.verticalCenter
                         text: modelData.name
                         color: Theme.textPrimary
-                        font.pixelSize: 14
+                        font.pixelSize: 13
                     }
 
                     MouseArea {
@@ -137,37 +132,37 @@ Item {
         }
 
         Rectangle {
-            x: 24
-            y: 292
-            width: 332
+            x: 22
+            y: 278
+            width: 316
             height: 1
-            color: "#48C5EAF4"
+            color: "#24FFFFFF"
         }
 
         Text {
-            x: 24
-            y: 314
+            x: 22
+            y: 300
             text: "Audio"
-            color: Theme.textSecondary
-            font.pixelSize: 13
+            color: Theme.textMuted
+            font.pixelSize: 12
         }
 
         Text {
-            x: 24
-            y: 340
+            x: 22
+            y: 326
             text: audioService ? (audioService.muted ? "Muted" : audioService.volume + "%") : "40%"
             color: Theme.textPrimary
-            font.pixelSize: 28
+            font.pixelSize: 26
             font.weight: Font.DemiBold
         }
 
         Rectangle {
-            x: 24
-            y: 386
-            width: 332
-            height: 8
+            x: 22
+            y: 370
+            width: 316
+            height: 7
             radius: 4
-            color: "#24485B64"
+            color: "#20FFFFFF"
 
             Rectangle {
                 width: parent.width * ((audioService ? audioService.volume : 40) / 100)

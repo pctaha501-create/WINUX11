@@ -6,8 +6,8 @@ Window {
     id: root
     width: 1280
     height: 720
-    minimumWidth: 900
-    minimumHeight: 560
+    minimumWidth: 980
+    minimumHeight: 600
     visible: true
     color: Theme.backgroundDeep
     title: "WINUX11"
@@ -27,22 +27,19 @@ Window {
 
         startOpen = false
         searchOpen = false
+        quickSettingsOpen = false
     }
 
-    Desktop {
-        anchors.fill: parent
-    }
+    Desktop { anchors.fill: parent }
 
-    WindowManager {
-        id: windowManager
-    }
+    WindowManager { id: windowManager }
 
     StartMenu {
         id: startMenu
         z: 500
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: taskbar.top
-        anchors.bottomMargin: 12
+        anchors.bottomMargin: 14
         open: root.startOpen
         onSearchRequested: {
             root.startOpen = false

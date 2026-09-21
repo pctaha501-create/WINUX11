@@ -5,36 +5,44 @@ Item {
     id: root
 
     property string iconSource: ""
-    property string label: ""
     property bool active: false
     signal clicked()
 
-    width: 48
-    height: 48
+    width: 42
+    height: 42
 
     Rectangle {
         id: bg
         anchors.fill: parent
-        radius: 15
-        color: root.active ? "#4A47D7FF" : (mouse.containsMouse ? "#35FFFFFF" : "#182B4650")
+        radius: 13
+        color: root.active ? "#253B536A" : (mouse.containsMouse ? "#20FFFFFF" : "transparent")
         border.width: root.active || mouse.containsMouse ? 1 : 0
-        border.color: "#78C7F4FF"
-        scale: mouse.pressed ? 0.92 : (mouse.containsMouse ? 1.05 : 1.0)
+        border.color: "#45FFFFFF"
+        scale: mouse.pressed ? 0.90 : (mouse.containsMouse ? 1.06 : 1.0)
 
-        Behavior on color { ColorAnimation { duration: 130 } }
-        Behavior on scale { NumberAnimation { duration: 130; easing.type: Easing.OutCubic } }
+        Behavior on color { ColorAnimation { duration: 120 } }
+        Behavior on scale { NumberAnimation { duration: 120; easing.type: Easing.OutCubic } }
 
         Image {
             anchors.centerIn: parent
-            width: 27
-            height: 27
+            width: 22
+            height: 22
             source: root.iconSource
-            sourceSize.width: 54
-            sourceSize.height: 54
+            sourceSize: Qt.size(44, 44)
             fillMode: Image.PreserveAspectFit
             smooth: true
             mipmap: true
             asynchronous: false
+            visible: status === Image.Ready
+        }
+
+        Rectangle {
+            anchors.centerIn: parent
+            width: 5
+            height: 5
+            radius: 3
+            color: Theme.accent
+            visible: parent.children.length > 0 && root.iconSource.length > 0
         }
 
         MouseArea {
@@ -43,15 +51,5 @@ Item {
             hoverEnabled: true
             onClicked: root.clicked()
         }
-    }
-
-    Text {
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.bottom
-        anchors.topMargin: 1
-        text: root.label
-        color: Theme.textPrimary
-        font.pixelSize: 9
-        visible: mouse.containsMouse && root.label.length > 0
     }
 }

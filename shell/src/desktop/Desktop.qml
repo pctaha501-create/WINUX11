@@ -13,31 +13,61 @@ Item {
     Rectangle {
         anchors.fill: parent
         gradient: Gradient {
-            GradientStop { position: 0.0; color: "#183B7180" }
-            GradientStop { position: 0.45; color: "#081F2B" }
-            GradientStop { position: 1.0; color: "#030B12" }
+            GradientStop { position: 0.0; color: "#101A2B" }
+            GradientStop { position: 0.48; color: "#080D16" }
+            GradientStop { position: 1.0; color: "#03050A" }
+        }
+    }
+
+    Rectangle {
+        width: 560
+        height: 560
+        radius: width / 2
+        x: parent.width - 360
+        y: -210
+        color: "#111D35"
+        opacity: 0.48
+    }
+
+    Rectangle {
+        width: 420
+        height: 420
+        radius: width / 2
+        x: -190
+        y: parent.height - 240
+        color: "#0B1727"
+        opacity: 0.58
+    }
+
+    Column {
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.leftMargin: 38
+        anchors.topMargin: 34
+        spacing: 5
+
+        Text {
+            text: "WINUX11"
+            color: Theme.textPrimary
+            font.pixelSize: 22
+            font.weight: Font.DemiBold
+        }
+
+        Text {
+            text: "A familiar desktop. Built from the ground up."
+            color: Theme.textMuted
+            font.pixelSize: 12
         }
     }
 
     Text {
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.leftMargin: 36
-        anchors.topMargin: 30
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: -42
         text: "WINUX11"
-        color: Theme.textPrimary
-        font.pixelSize: 22
-        font.weight: Font.DemiBold
-        opacity: 0.95
-    }
-
-    Text {
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.leftMargin: 38
-        anchors.topMargin: 60
-        text: "Glassmorphism Shell"
-        color: Theme.textSecondary
-        font.pixelSize: 13
+        color: "#FFFFFF"
+        opacity: 0.035
+        font.pixelSize: 170
+        font.weight: Font.Black
     }
 }

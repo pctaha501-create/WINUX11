@@ -23,7 +23,7 @@ QtObject {
     readonly property color danger: "#FF7D8B"
     readonly property int radiusSmall: 14
     readonly property int radiusMedium: 20
-    readonly property int radiusLarge: 28
-    readonly property int taskbarHeight: 82
-    readonly property int iconSize: 52
+    readonly property int radiusLarge: 24
+    readonly property int taskbarHeight: 78
+    readonly property int iconSize: 48
 }

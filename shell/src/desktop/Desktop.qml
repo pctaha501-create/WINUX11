@@ -10,11 +10,13 @@ Item {
         color: Theme.backgroundDeep
     }
 
-    WaterFlow { anchors.fill: parent }
-
     Rectangle {
         anchors.fill: parent
-        color: "#22000000"
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#183B7180" }
+            GradientStop { position: 0.45; color: "#081F2B" }
+            GradientStop { position: 1.0; color: "#030B12" }
+        }
     }
 
     Text {
@@ -34,7 +36,7 @@ Item {
         anchors.top: parent.top
         anchors.leftMargin: 38
         anchors.topMargin: 60
-        text: "Water Flow Shell"
+        text: "Glassmorphism Shell"
         color: Theme.textSecondary
         font.pixelSize: 13
     }

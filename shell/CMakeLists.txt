@@ -24,7 +24,6 @@ qt_add_qml_module(WINUX11Shell
         src/ui/Theme.qml
         src/ui/GlassPanel.qml
         src/ui/IconButton.qml
-        src/ui/WaterFlow.qml
         src/desktop/Desktop.qml
         src/taskbar/Taskbar.qml
         src/taskbar/TaskbarButton.qml

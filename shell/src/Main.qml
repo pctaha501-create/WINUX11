@@ -4,13 +4,14 @@ import WINUX11 1.0
 
 Window {
     id: root
-    width: 1440
-    height: 900
-    minimumWidth: 1100
-    minimumHeight: 700
+    width: 1280
+    height: 720
+    minimumWidth: 900
+    minimumHeight: 560
     visible: true
     color: Theme.backgroundDeep
     title: "WINUX11"
+    visibility: Window.Maximized
 
     property bool startOpen: false
     property bool searchOpen: false
@@ -28,9 +29,13 @@ Window {
         searchOpen = false
     }
 
-    Desktop { anchors.fill: parent }
+    Desktop {
+        anchors.fill: parent
+    }
 
-    WindowManager { id: windowManager }
+    WindowManager {
+        id: windowManager
+    }
 
     StartMenu {
         id: startMenu

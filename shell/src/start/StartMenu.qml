@@ -8,182 +8,125 @@ Item {
     signal searchRequested()
     signal launch(string command)
 
-    visible: open
-    width: Math.min(parent ? parent.width - 40 : 720, 720)
-    height: Math.min(parent ? parent.height - 130 : 700, 650)
+    width: 760
+    height: 600
+    opacity: open ? 1 : 0
+    scale: open ? 1 : 0.92
+    visible: opacity > 0
+    transformOrigin: Item.Bottom
+
+    Behavior on opacity { NumberAnimation { duration: 170; easing.type: Easing.OutCubic } }
+    Behavior on scale { NumberAnimation { duration: 240; easing.type: Easing.OutBack } }
 
     GlassPanel {
         anchors.fill: parent
-        glassColor: "#f0141720"
-        radius: 26
+        glassColor: "#F00D2730"
+        borderColor: "#99A9EAF4"
 
-        scale: root.open ? 1 : 0.96
-        opacity: root.open ? 1 : 0
+        Text {
+            x: 32
+            y: 28
+            text: "WINUX11"
+            color: Theme.textPrimary
+            font.pixelSize: 28
+            font.weight: Font.DemiBold
+        }
 
-        Behavior on scale {
-            NumberAnimation {
-                duration: 190
-                easing.type: Easing.OutCubic
+        Text {
+            x: 34
+            y: 66
+            text: "Start"
+            color: Theme.textSecondary
+            font.pixelSize: 14
+        }
+
+        Rectangle {
+            x: 30
+            y: 104
+            width: parent.width - 60
+            height: 56
+            radius: 18
+            color: "#213D5058"
+            border.width: 1
+            border.color: "#55B8EAF2"
+
+            Image {
+                x: 17
+                anchors.verticalCenter: parent.verticalCenter
+                width: 24
+                height: 24
+                source: "qrc:/qt/qml/WINUX11/assets/icons/search.svg"
+            }
+
+            Text {
+                x: 54
+                anchors.verticalCenter: parent.verticalCenter
+                text: "Search apps, files and settings"
+                color: Theme.textSecondary
+                font.pixelSize: 15
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: root.searchRequested()
             }
         }
 
-        Behavior on opacity {
-            NumberAnimation { duration: 140 }
-        }
+        Grid {
+            x: 30
+            y: 184
+            columns: 4
+            columnSpacing: 12
+            rowSpacing: 12
 
-        Column {
-            anchors.fill: parent
-            anchors.margins: 28
-            spacing: 18
+            Repeater {
+                model: [
+                    {name:"File Explorer", icon:"explorer.svg", cmd:"explorer"},
+                    {name:"Browser", icon:"browser.svg", cmd:"browser"},
+                    {name:"Terminal", icon:"terminal.svg", cmd:"terminal"},
+                    {name:"Network", icon:"network.svg", cmd:"network"},
+                    {name:"Settings", icon:"settings.svg", cmd:"settings"},
+                    {name:"Security", icon:"focus.svg", cmd:"security"},
+                    {name:"Notifications", icon:"notifications.svg", cmd:"notifications"},
+                    {name:"Audio", icon:"volume.svg", cmd:"audio"}
+                ]
 
-            Text {
-                text: "Start"
-                color: "#f8f9fb"
-                font.pixelSize: 26
-                font.bold: true
-            }
+                delegate: Rectangle {
+                    required property var modelData
+                    width: 166
+                    height: 112
+                    radius: 20
+                    color: mouse.containsMouse ? "#2DFFFFFF" : "#172C424A"
+                    border.width: 1
+                    border.color: "#45B8EAF2"
+                    scale: mouse.pressed ? 0.96 : (mouse.containsMouse ? 1.025 : 1)
 
-            Rectangle {
-                width: parent.width
-                height: 50
-                radius: 15
-                color: "#252a34"
-                border.width: 1
-                border.color: "#353c48"
+                    Behavior on scale { NumberAnimation { duration: 140; easing.type: Easing.OutCubic } }
 
-                Text {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 17
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: "⌕  Search"
-                    color: "#929aa7"
-                    font.pixelSize: 15
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    onClicked: {
-                        root.open = false
-                        root.searchRequested()
+                    Image {
+                        x: 18
+                        y: 20
+                        width: 32
+                        height: 32
+                        source: "qrc:/qt/qml/WINUX11/assets/icons/" + modelData.icon
                     }
-                }
-            }
 
-            Text {
-                text: "Pinned"
-                color: "#f4f6f9"
-                font.pixelSize: 17
-                font.bold: true
-            }
-
-            Grid {
-                width: parent.width
-                columns: 4
-                rowSpacing: 8
-                columnSpacing: 8
-
-                Repeater {
-                    model: [
-                        {name:"Explorer", icon:"▣", command:"explorer"},
-                        {name:"Terminal", icon:">", command:"terminal"},
-                        {name:"Settings", icon:"⚙", command:"settings"},
-                        {name:"Browser", icon:"◎", command:"browser"},
-                        {name:"Notepad", icon:"▤", command:"notepad"},
-                        {name:"Calculator", icon:"=", command:"calculator"},
-                        {name:"Files", icon:"□", command:"explorer"},
-                        {name:"Store", icon:"◆", command:"browser"}
-                    ]
-
-                    delegate: Rectangle {
-                        width: (parent.width - 24) / 4
-                        height: 82
-                        radius: 14
-                        color: hover.containsMouse ? "#252b36" : "transparent"
-
-                        Column {
-                            anchors.centerIn: parent
-                            spacing: 6
-
-                            Text {
-                                width: 120
-                                text: modelData.icon
-                                color: "#f4f6f9"
-                                font.pixelSize: 23
-                                horizontalAlignment: Text.AlignHCenter
-                            }
-
-                            Text {
-                                width: 120
-                                text: modelData.name
-                                color: "#cdd2da"
-                                font.pixelSize: 12
-                                horizontalAlignment: Text.AlignHCenter
-                            }
-                        }
-
-                        MouseArea {
-                            id: hover
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            cursorShape: Qt.PointingHandCursor
-                            onClicked: root.launch(modelData.command)
-                        }
+                    Text {
+                        x: 18
+                        y: 65
+                        text: modelData.name
+                        color: Theme.textPrimary
+                        font.pixelSize: 14
                     }
-                }
-            }
 
-            Text {
-                text: "Recommended"
-                color: "#f4f6f9"
-                font.pixelSize: 17
-                font.bold: true
-            }
-
-            Rectangle {
-                width: parent.width
-                height: 74
-                radius: 15
-                color: "#171a21"
-
-                Text {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 17
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: "WINUX11 Shell\nWelcome to your workspace"
-                    color: "#dfe3e9"
-                    font.pixelSize: 14
-                }
-            }
-
-            Item { width: 1; height: 1 }
-
-            Rectangle {
-                width: parent.width
-                height: 48
-                radius: 14
-                color: "#191c23"
-
-                Text {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 18
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: "Taha"
-                    color: "#eef1f5"
-                    font.pixelSize: 14
-                }
-
-                Text {
-                    anchors.right: parent.right
-                    anchors.rightMargin: 18
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: "⏻"
-                    color: "#e7eaf0"
-                    font.pixelSize: 21
+                    MouseArea {
+                        id: mouse
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onClicked: root.launch(modelData.cmd)
+                    }
                 }
             }
         }
     }
-
-    Keys.onEscapePressed: root.open = false
 }

@@ -5,175 +5,135 @@ Item {
     id: root
 
     property bool open: false
-    property var applications: [
-        {name:"File Explorer", icon:"▣", command:"explorer"},
-        {name:"Terminal", icon:">", command:"terminal"},
-        {name:"Settings", icon:"⚙", command:"settings"},
-        {name:"Browser", icon:"◎", command:"browser"},
-        {name:"Calculator", icon:"=", command:"calculator"},
-        {name:"Notepad", icon:"▤", command:"notepad"}
-    ]
-
     signal launch(string command)
 
-    visible: open
     anchors.fill: parent
+    visible: open
+    opacity: open ? 1 : 0
 
     Rectangle {
         anchors.fill: parent
-        color: "#000000"
-        opacity: 0.38
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: root.open = false
-        }
+        color: "#28030B10"
+        visible: root.open
     }
 
     GlassPanel {
-        id: panel
-
-        width: Math.min(parent.width - 48, 760)
-        height: Math.min(parent.height - 100, 540)
+        width: 720
+        height: 520
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: 70
+        anchors.topMargin: 86
+        glassColor: "#F00C252E"
+        borderColor: "#A0B4EDF5"
+        scale: root.open ? 1 : 0.94
+        opacity: root.open ? 1 : 0
 
-        glassColor: "#f0141720"
-        radius: 24
+        Behavior on scale { NumberAnimation { duration: 230; easing.type: Easing.OutBack } }
+        Behavior on opacity { NumberAnimation { duration: 170 } }
+
+        Text {
+            x: 28
+            y: 24
+            text: "Search"
+            color: Theme.textPrimary
+            font.pixelSize: 24
+            font.weight: Font.DemiBold
+        }
+
+        Rectangle {
+            x: 28
+            y: 72
+            width: parent.width - 56
+            height: 60
+            radius: 18
+            color: "#233A515A"
+            border.width: 1
+            border.color: "#65B8EAF2"
+
+            Image {
+                x: 18
+                anchors.verticalCenter: parent.verticalCenter
+                width: 26
+                height: 26
+                source: "qrc:/qt/qml/WINUX11/assets/icons/search.svg"
+            }
+
+            TextInput {
+                id: input
+                x: 58
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width - 75
+                color: Theme.textPrimary
+                selectionColor: Theme.accent
+                font.pixelSize: 17
+                focus: root.open
+                clip: true
+                placeholderText: "Type to search..."
+                placeholderTextColor: Theme.textMuted
+            }
+        }
+
+        Text {
+            x: 30
+            y: 158
+            text: input.text.length === 0 ? "Quick actions" : "Results"
+            color: Theme.textSecondary
+            font.pixelSize: 14
+        }
 
         Column {
-            anchors.fill: parent
-            anchors.margins: 24
-            spacing: 16
+            x: 28
+            y: 194
+            width: parent.width - 56
+            spacing: 10
 
-            Rectangle {
-                width: parent.width
-                height: 58
-                radius: 16
-                color: "#252a34"
-                border.width: 1
-                border.color: "#343b47"
-
-                Text {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 18
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: "⌕"
-                    color: "#9da5b3"
-                    font.pixelSize: 25
-                }
-
-                TextInput {
-                    id: input
-                    anchors.left: parent.left
-                    anchors.leftMargin: 54
-                    anchors.right: parent.right
-                    anchors.rightMargin: 18
-                    anchors.verticalCenter: parent.verticalCenter
-                    color: "#f6f7fa"
-                    selectionColor: "#477fce"
-                    font.pixelSize: 17
-                    onTextChanged: panel.rebuild()
-                    onAccepted: {
-                        if (filtered.count)
-                            root.launch(filtered.get(0).command)
-                    }
-                }
-
-                Text {
-                    anchors.left: input.left
-                    anchors.verticalCenter: input.verticalCenter
-                    text: "Search apps, files, settings..."
-                    color: "#858d9a"
-                    font.pixelSize: 17
-                    visible: input.text.length === 0
-                }
-            }
-
-            Text {
-                text: input.text.length ? "Search results" : "Quick access"
-                color: "#f5f7fa"
-                font.pixelSize: 19
-                font.bold: true
-            }
-
-            ListModel { id: filtered }
-
-            ListView {
-                id: list
-                width: parent.width
-                height: parent.height - 112
-                spacing: 5
-                clip: true
-                model: filtered
+            Repeater {
+                model: [
+                    {name:"File Explorer", desc:"Browse files and folders", icon:"explorer.svg", cmd:"explorer"},
+                    {name:"Terminal", desc:"Open the WINUX11 terminal", icon:"terminal.svg", cmd:"terminal"},
+                    {name:"Settings", desc:"System settings", icon:"settings.svg", cmd:"settings"},
+                    {name:"Browser", desc:"Open the web browser", icon:"browser.svg", cmd:"browser"}
+                ]
 
                 delegate: Rectangle {
-                    width: list.width
-                    height: 60
-                    radius: 13
-                    color: hover.containsMouse ? "#252b36" : "transparent"
+                    required property var modelData
+                    width: parent.width
+                    height: 64
+                    radius: 16
+                    color: mouse.containsMouse ? "#2DFFFFFF" : "#152A4148"
 
-                    Row {
-                        anchors.fill: parent
-                        anchors.leftMargin: 14
-                        spacing: 15
+                    Image {
+                        x: 15
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 30
+                        height: 30
+                        source: "qrc:/qt/qml/WINUX11/assets/icons/" + modelData.icon
+                    }
 
-                        Text {
-                            width: 38
-                            anchors.verticalCenter: parent.verticalCenter
-                            text: model.icon
-                            color: "#f5f7fa"
-                            font.pixelSize: 22
-                            horizontalAlignment: Text.AlignHCenter
-                        }
+                    Text {
+                        x: 58
+                        y: 13
+                        text: modelData.name
+                        color: Theme.textPrimary
+                        font.pixelSize: 15
+                    }
 
-                        Column {
-                            anchors.verticalCenter: parent.verticalCenter
-
-                            Text {
-                                text: model.name
-                                color: "#f5f7fa"
-                                font.pixelSize: 15
-                            }
-
-                            Text {
-                                text: "Application"
-                                color: "#818997"
-                                font.pixelSize: 12
-                            }
-                        }
+                    Text {
+                        x: 58
+                        y: 36
+                        text: modelData.desc
+                        color: Theme.textSecondary
+                        font.pixelSize: 12
                     }
 
                     MouseArea {
-                        id: hover
+                        id: mouse
                         anchors.fill: parent
                         hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: root.launch(model.command)
+                        onClicked: root.launch(modelData.cmd)
                     }
                 }
             }
         }
-
-        function rebuild() {
-            filtered.clear()
-            const q = input.text.toLowerCase()
-
-            for (let i = 0; i < applications.length; ++i) {
-                if (!q || applications[i].name.toLowerCase().indexOf(q) >= 0)
-                    filtered.append(applications[i])
-            }
-        }
-
-        onVisibleChanged: {
-            if (visible) {
-                input.text = ""
-                rebuild()
-                input.forceActiveFocus()
-            }
-        }
     }
-
-    Keys.onEscapePressed: root.open = false
 }

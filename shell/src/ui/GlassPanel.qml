@@ -6,30 +6,21 @@ Rectangle {
 
     property color glassColor: Theme.surfaceGlass
     property color borderColor: Theme.border
-    property real shadowOpacity: 0.28
+    property real borderWidth: 1
+    property bool animated: true
 
-    radius: Theme.radiusMedium
     color: glassColor
-    border.width: 1
+    radius: Theme.radiusLarge
+    border.width: borderWidth
     border.color: borderColor
 
-    Rectangle {
-        anchors.fill: parent
-        anchors.margins: 1
-        radius: Math.max(0, parent.radius - 1)
-        color: "transparent"
-        border.width: 1
-        border.color: "#18FFFFFF"
+    Behavior on color {
+        enabled: root.animated
+        ColorAnimation { duration: 180; easing.type: Easing.OutCubic }
     }
 
-    Rectangle {
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.margins: 1
-        height: Math.min(52, parent.height * 0.34)
-        radius: Math.min(parent.radius - 1, 18)
-        color: "#12FFFFFF"
-        opacity: 0.8
+    Behavior on scale {
+        enabled: root.animated
+        NumberAnimation { duration: 220; easing.type: Easing.OutCubic }
     }
 }

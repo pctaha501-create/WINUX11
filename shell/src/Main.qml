@@ -4,13 +4,12 @@ import WINUX11 1.0
 
 Window {
     id: root
-
-    width: 1280
-    height: 760
-    minimumWidth: 900
-    minimumHeight: 600
+    width: 1440
+    height: 900
+    minimumWidth: 1100
+    minimumHeight: 700
     visible: true
-    color: "#070A10"
+    color: Theme.backgroundDeep
     title: "WINUX11"
 
     property bool startOpen: false
@@ -27,7 +26,6 @@ Window {
 
         startOpen = false
         searchOpen = false
-        quickSettingsOpen = false
     }
 
     Desktop { anchors.fill: parent }
@@ -39,9 +37,12 @@ Window {
         z: 500
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: taskbar.top
-        anchors.bottomMargin: 8
+        anchors.bottomMargin: 12
         open: root.startOpen
-        onSearchRequested: { root.startOpen = false; root.searchOpen = true }
+        onSearchRequested: {
+            root.startOpen = false
+            root.searchOpen = true
+        }
         onLaunch: function(command) { root.launch(command) }
     }
 
@@ -58,11 +59,16 @@ Window {
         startOpen: root.startOpen
         searchOpen: root.searchOpen
         quickSettingsOpen: root.quickSettingsOpen
-
-        onStartClicked: { root.quickSettingsOpen = false; root.searchOpen = false; root.startOpen = !root.startOpen }
-        onSearchClicked: { root.quickSettingsOpen = false; root.startOpen = false; root.searchOpen = !root.searchOpen }
-        onQuickSettingsClicked: { root.startOpen = false; root.searchOpen = false; root.quickSettingsOpen = !root.quickSettingsOpen }
+        onStartClicked: {
+            root.searchOpen = false
+            root.startOpen = !root.startOpen
+        }
+        onSearchClicked: {
+            root.startOpen = false
+            root.searchOpen = !root.searchOpen
+        }
         onLaunch: function(command) { root.launch(command) }
+        onQuickSettingsOpenChanged: root.quickSettingsOpen = taskbar.quickSettingsOpen
     }
 
     Item {
@@ -84,7 +90,6 @@ Window {
                 event.accepted = true
             } else if (event.key === Qt.Key_Meta) {
                 root.searchOpen = false
-                root.quickSettingsOpen = false
                 root.startOpen = !root.startOpen
                 event.accepted = true
             }

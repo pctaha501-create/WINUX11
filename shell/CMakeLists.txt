@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(WINUX11Shell VERSION 0.4 LANGUAGES CXX)
+project(WINUX11Shell VERSION 0.5 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -12,6 +12,8 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick)
 
 qt_add_executable(WINUX11Shell
     src/main.cpp
+    src/services/AudioService.cpp
+    src/services/AudioService.h
 )
 
 qt_add_qml_module(WINUX11Shell
@@ -22,6 +24,7 @@ qt_add_qml_module(WINUX11Shell
         src/ui/Theme.qml
         src/ui/GlassPanel.qml
         src/ui/IconButton.qml
+        src/ui/WaterFlow.qml
         src/desktop/Desktop.qml
         src/taskbar/Taskbar.qml
         src/taskbar/TaskbarButton.qml

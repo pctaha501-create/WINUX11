@@ -3,214 +3,178 @@ import WINUX11 1.0
 
 Item {
     id: root
+    width: 190
+    height: 62
 
     property bool panelOpen: false
-    property string currentTime: Qt.formatTime(new Date(), "HH:mm")
     signal panelToggled()
-
-    width: 150
-    height: 42
 
     Row {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 2
+        spacing: 8
 
-        TrayButton {
+        TaskbarButton {
+            width: 48
+            height: 48
             iconSource: "qrc:/qt/qml/WINUX11/assets/icons/network.svg"
-            label: "Network"
             onClicked: root.panelToggled()
         }
-        TrayButton {
+
+        TaskbarButton {
+            width: 48
+            height: 48
             iconSource: "qrc:/qt/qml/WINUX11/assets/icons/volume.svg"
-            label: "Audio"
             onClicked: root.panelToggled()
         }
-        TrayButton {
-            iconSource: "qrc:/qt/qml/WINUX11/assets/icons/battery.svg"
-            label: "Power"
+
+        TaskbarButton {
+            width: 48
+            height: 48
+            iconSource: "qrc:/qt/qml/WINUX11/assets/icons/settings.svg"
             onClicked: root.panelToggled()
         }
 
         Text {
             anchors.verticalCenter: parent.verticalCenter
-            text: root.currentTime
+            text: Qt.formatTime(new Date(), "HH:mm")
             color: Theme.textPrimary
-            font.pixelSize: 12
+            font.pixelSize: 15
             font.weight: Font.Medium
-            leftPadding: 7
+
+            Timer {
+                interval: 1000
+                running: true
+                repeat: true
+                onTriggered: parent.text = Qt.formatTime(new Date(), "HH:mm")
+            }
         }
     }
 
-    Rectangle {
+    GlassPanel {
         id: panel
-        visible: root.panelOpen
         z: 100
-        width: 320
-        height: 390
-        x: parent.width - width
-        y: -height - 12
-        radius: 24
-        color: "#EE101722"
-        border.width: 1
-        border.color: "#62FFFFFF"
+        width: 380
+        height: 440
+        anchors.right: parent.right
+        anchors.bottom: parent.top
+        anchors.bottomMargin: 14
+        glassColor: "#EE0D252E"
+        borderColor: "#99A9EAF4"
+        visible: root.panelOpen
+        opacity: root.panelOpen ? 1 : 0
+        scale: root.panelOpen ? 1 : 0.88
+        transformOrigin: Item.BottomRight
+
+        Behavior on opacity { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
+        Behavior on scale { NumberAnimation { duration: 240; easing.type: Easing.OutBack } }
+
+        Text {
+            x: 24
+            y: 22
+            text: "Quick Settings"
+            color: Theme.textPrimary
+            font.pixelSize: 22
+            font.weight: Font.DemiBold
+        }
+
+        Text {
+            x: 24
+            y: 56
+            text: "Water Flow controls"
+            color: Theme.textSecondary
+            font.pixelSize: 13
+        }
+
+        Grid {
+            x: 24
+            y: 98
+            columns: 2
+            rowSpacing: 12
+            columnSpacing: 12
+
+            Repeater {
+                model: [
+                    {name:"Wi-Fi", icon:"network.svg"},
+                    {name:"Bluetooth", icon:"bluetooth.svg"},
+                    {name:"Night light", icon:"moon.svg"},
+                    {name:"Focus", icon:"focus.svg"}
+                ]
+
+                delegate: Rectangle {
+                    required property var modelData
+                    width: 158
+                    height: 86
+                    radius: 18
+                    color: mouse.containsMouse ? "#2BFFFFFF" : "#182D4650"
+                    border.width: 1
+                    border.color: "#55B8EAF2"
+
+                    Image {
+                        x: 16
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 30
+                        height: 30
+                        source: "qrc:/qt/qml/WINUX11/assets/icons/" + modelData.icon
+                        fillMode: Image.PreserveAspectFit
+                    }
+
+                    Text {
+                        x: 58
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: modelData.name
+                        color: Theme.textPrimary
+                        font.pixelSize: 14
+                    }
+
+                    MouseArea {
+                        id: mouse
+                        anchors.fill: parent
+                        hoverEnabled: true
+                    }
+                }
+            }
+        }
 
         Rectangle {
-            anchors.fill: parent
-            anchors.margins: 1
-            radius: 23
-            color: "transparent"
-            border.width: 1
-            border.color: "#15FFFFFF"
+            x: 24
+            y: 292
+            width: 332
+            height: 1
+            color: "#48C5EAF4"
         }
 
-        Column {
-            anchors.fill: parent
-            anchors.margins: 18
-            spacing: 14
+        Text {
+            x: 24
+            y: 314
+            text: "Audio"
+            color: Theme.textSecondary
+            font.pixelSize: 13
+        }
 
-            Row {
-                width: parent.width
-                spacing: 10
+        Text {
+            x: 24
+            y: 340
+            text: audioService ? (audioService.muted ? "Muted" : audioService.volume + "%") : "40%"
+            color: Theme.textPrimary
+            font.pixelSize: 28
+            font.weight: Font.DemiBold
+        }
 
-                Column {
-                    width: parent.width - 52
-                    spacing: 2
-                    Text { text: "Quick Settings"; color: Theme.textPrimary; font.pixelSize: 19; font.weight: Font.DemiBold }
-                    Text { text: "WINUX11 control center"; color: Theme.textMuted; font.pixelSize: 11 }
-                }
-
-                Rectangle {
-                    width: 40
-                    height: 40
-                    radius: 13
-                    color: "#1C2635"
-                    border.width: 1
-                    border.color: "#28FFFFFF"
-                    Text { anchors.centerIn: parent; text: "×"; color: Theme.textSecondary; font.pixelSize: 21 }
-                    MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.panelToggled() }
-                }
-            }
-
-            Row {
-                width: parent.width
-                spacing: 10
-                QuickTile { title: "Wi-Fi"; subtitle: "Connected"; iconSource: "qrc:/qt/qml/WINUX11/assets/icons/network.svg"; width: (parent.width - 10) / 2 }
-                QuickTile { title: "Bluetooth"; subtitle: "Off"; iconSource: "qrc:/qt/qml/WINUX11/assets/icons/bluetooth.svg"; width: (parent.width - 10) / 2 }
-            }
-
-            Row {
-                width: parent.width
-                spacing: 10
-                QuickTile { title: "Night light"; subtitle: "Off"; iconSource: "qrc:/qt/qml/WINUX11/assets/icons/moon.svg"; width: (parent.width - 10) / 2 }
-                QuickTile { title: "Focus"; subtitle: "Ready"; iconSource: "qrc:/qt/qml/WINUX11/assets/icons/focus.svg"; width: (parent.width - 10) / 2 }
-            }
-
-            Text {
-                text: "Volume"
-                color: Theme.textSecondary
-                font.pixelSize: 12
-                font.weight: Font.Medium
-            }
+        Rectangle {
+            x: 24
+            y: 386
+            width: 332
+            height: 8
+            radius: 4
+            color: "#24485B64"
 
             Rectangle {
-                width: parent.width
-                height: 42
-                radius: 14
-                color: "#14202F"
-                border.width: 1
-                border.color: "#25FFFFFF"
-
-                Image { anchors.left: parent.left; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter; width: 18; height: 18; source: "qrc:/qt/qml/WINUX11/assets/icons/volume.svg" }
-
-                Rectangle {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 42
-                    anchors.right: parent.right
-                    anchors.rightMargin: 18
-                    anchors.verticalCenter: parent.verticalCenter
-                    height: 5
-                    radius: 3
-                    color: "#26364C"
-                }
-
-                Rectangle {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 42
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 150
-                    height: 5
-                    radius: 3
-                    color: Theme.accent
-                }
-
-                Text { anchors.right: parent.right; anchors.rightMargin: 12; anchors.verticalCenter: parent.verticalCenter; text: "40%"; color: Theme.textPrimary; font.pixelSize: 11 }
-            }
-
-            Text {
-                text: "Battery  •  Connected to power"
-                color: Theme.textSecondary
-                font.pixelSize: 12
-            }
-
-            Rectangle { width: parent.width; height: 1; color: "#18FFFFFF" }
-
-            Row {
-                width: parent.width
-                spacing: 8
-                QuickAction { title: "Settings"; iconSource: "qrc:/qt/qml/WINUX11/assets/icons/settings.svg"; width: (parent.width - 8) / 2 }
-                QuickAction { title: "Notifications"; iconSource: "qrc:/qt/qml/WINUX11/assets/icons/notifications.svg"; width: (parent.width - 8) / 2 }
+                width: parent.width * ((audioService ? audioService.volume : 40) / 100)
+                height: parent.height
+                radius: 4
+                color: Theme.accent
             }
         }
-    }
-
-    Timer {
-        interval: 1000
-        running: true
-        repeat: true
-        onTriggered: root.currentTime = Qt.formatTime(new Date(), "HH:mm")
-    }
-
-    component TrayButton: Rectangle {
-        id: tray
-        property string iconSource: ""
-        property string label: ""
-        signal clicked()
-        width: 32
-        height: 38
-        radius: 11
-        color: mouse.containsMouse ? "#273245" : "transparent"
-        Image { anchors.centerIn: parent; width: 17; height: 17; source: tray.iconSource }
-        MouseArea { id: mouse; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: tray.clicked() }
-    }
-
-    component QuickTile: Rectangle {
-        property string title: ""
-        property string subtitle: ""
-        property string iconSource: ""
-        width: 100
-        height: 76
-        radius: 17
-        color: "#182435"
-        border.width: 1
-        border.color: "#30FFFFFF"
-        Image { x: 12; y: 13; width: 20; height: 20; source: parent.iconSource }
-        Text { x: 12; y: 42; text: parent.title; color: Theme.textPrimary; font.pixelSize: 12; font.weight: Font.Medium }
-        Text { x: 12; y: 59; text: parent.subtitle; color: Theme.textMuted; font.pixelSize: 9 }
-        MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor }
-    }
-
-    component QuickAction: Rectangle {
-        property string title: ""
-        property string iconSource: ""
-        width: 100
-        height: 42
-        radius: 13
-        color: "#14202F"
-        border.width: 1
-        border.color: "#25FFFFFF"
-        Image { anchors.left: parent.left; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter; width: 16; height: 16; source: parent.iconSource }
-        Text { anchors.left: parent.left; anchors.leftMargin: 36; anchors.verticalCenter: parent.verticalCenter; text: parent.title; color: Theme.textSecondary; font.pixelSize: 11 }
-        MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor }
     }
 }

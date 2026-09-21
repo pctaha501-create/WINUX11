@@ -68,7 +68,18 @@ Item {
                 font.pixelSize: 17
                 focus: root.open
                 clip: true
-                placeholderText: ""
+            }
+
+            Text {
+                x: 58
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width - 75
+                text: "Type to search..."
+                color: Theme.textMuted
+                font.pixelSize: 17
+                visible: input.text.length === 0
+                clip: true
+                z: 1
             }
         }
 

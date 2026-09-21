@@ -5,6 +5,8 @@ Item {
     id: root
     anchors.fill: parent
 
+    signal desktopClicked()
+
     Rectangle {
         anchors.fill: parent
         color: Theme.backgroundDeep
@@ -12,6 +14,7 @@ Item {
 
     Rectangle {
         anchors.fill: parent
+
         gradient: Gradient {
             GradientStop { position: 0.0; color: "#101A2B" }
             GradientStop { position: 0.48; color: "#080D16" }
@@ -69,5 +72,12 @@ Item {
         opacity: 0.035
         font.pixelSize: 170
         font.weight: Font.Black
+    }
+
+    // Clicking anywhere on the desktop closes open shell menus/panels.
+    MouseArea {
+        anchors.fill: parent
+        z: 100
+        onClicked: root.desktopClicked()
     }
 }

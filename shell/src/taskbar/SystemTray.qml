@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Window
 import WINUX11 1.0
 
 Item {
@@ -59,10 +60,22 @@ Item {
         id: panel
         z: 1000
         width: 360
-        height: 390
-        anchors.right: parent.right
-        anchors.bottom: parent.top
-        anchors.bottomMargin: 10
+        height: 370
+
+        // Position in actual window coordinates, then map into this item's
+        // coordinate space. This keeps the panel fully inside the screen
+        // at every supported window size.
+        x: root.mapFromItem(
+            null,
+            Math.max(12, Window.width - width - 16),
+            Math.max(12, Window.height - height - 84)
+        ).x
+        y: root.mapFromItem(
+            null,
+            Math.max(12, Window.width - width - 16),
+            Math.max(12, Window.height - height - 84)
+        ).y
+
         glassColor: "#F00A0E15"
         borderColor: "#58FFFFFF"
         radius: 30
@@ -113,7 +126,6 @@ Item {
 
                 delegate: Rectangle {
                     required property var modelData
-
                     width: 153
                     height: 72
                     radius: 22
@@ -187,7 +199,7 @@ Item {
 
         Rectangle {
             x: 22
-            y: 278
+            y: 258
             width: 316
             height: 1
             color: "#24FFFFFF"
@@ -195,7 +207,7 @@ Item {
 
         Text {
             x: 22
-            y: 300
+            y: 278
             text: "Audio"
             color: "#FFFFFF"
             font.pixelSize: 12
@@ -203,7 +215,7 @@ Item {
 
         Text {
             x: 22
-            y: 326
+            y: 300
             text: root.displayVolume + "%"
             color: "#FFFFFF"
             font.pixelSize: 26
@@ -213,7 +225,7 @@ Item {
         Rectangle {
             id: volumeTrack
             x: 22
-            y: 370
+            y: 340
             width: 316
             height: 7
             radius: 4
@@ -234,8 +246,13 @@ Item {
                 onPositionChanged: if (pressed) updateVolume(mouse.x)
 
                 function updateVolume(x) {
-                    var value = Math.max(0, Math.min(100,
-                        Math.round((x / volumeTrack.width) * 100)))
+                    var value = Math.max(
+                        0,
+                        Math.min(
+                            100,
+                            Math.round((x / volumeTrack.width) * 100)
+                        )
+                    )
                     systemService.setVolume(value)
                 }
             }

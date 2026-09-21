@@ -17,6 +17,12 @@ Window {
     property bool searchOpen: false
     property bool quickSettingsOpen: false
 
+    function closeShellMenus() {
+        startOpen = false
+        searchOpen = false
+        quickSettingsOpen = false
+    }
+
     function launch(command) {
         if (command === "terminal")
             launcher.openTerminal()
@@ -25,14 +31,17 @@ Window {
         else if (command === "browser")
             launcher.openBrowser()
 
-        startOpen = false
-        searchOpen = false
-        quickSettingsOpen = false
+        closeShellMenus()
     }
 
-    Desktop { anchors.fill: parent }
+    Desktop {
+        anchors.fill: parent
+        onDesktopClicked: root.closeShellMenus()
+    }
 
-    WindowManager { id: windowManager }
+    WindowManager {
+        id: windowManager
+    }
 
     StartMenu {
         id: startMenu
@@ -41,18 +50,24 @@ Window {
         anchors.bottom: taskbar.top
         anchors.bottomMargin: 14
         open: root.startOpen
+
         onSearchRequested: {
             root.startOpen = false
             root.searchOpen = true
         }
-        onLaunch: function(command) { root.launch(command) }
+
+        onLaunch: function(command) {
+            root.launch(command)
+        }
     }
 
     Search {
         id: search
         z: 600
         open: root.searchOpen
-        onLaunch: function(command) { root.launch(command) }
+        onLaunch: function(command) {
+            root.launch(command)
+        }
     }
 
     Taskbar {
@@ -61,16 +76,25 @@ Window {
         startOpen: root.startOpen
         searchOpen: root.searchOpen
         quickSettingsOpen: root.quickSettingsOpen
+
         onStartClicked: {
             root.searchOpen = false
+            root.quickSettingsOpen = false
             root.startOpen = !root.startOpen
         }
+
         onSearchClicked: {
             root.startOpen = false
+            root.quickSettingsOpen = false
             root.searchOpen = !root.searchOpen
         }
-        onLaunch: function(command) { root.launch(command) }
-        onQuickSettingsOpenChanged: root.quickSettingsOpen = taskbar.quickSettingsOpen
+
+        onLaunch: function(command) {
+            root.launch(command)
+        }
+
+        onQuickSettingsOpenChanged:
+            root.quickSettingsOpen = taskbar.quickSettingsOpen
     }
 
     Item {
@@ -80,9 +104,7 @@ Window {
 
         Keys.onPressed: function(event) {
             if (event.key === Qt.Key_Escape) {
-                root.startOpen = false
-                root.searchOpen = false
-                root.quickSettingsOpen = false
+                root.closeShellMenus()
                 event.accepted = true
             } else if ((event.modifiers & Qt.MetaModifier) && event.key === Qt.Key_E) {
                 root.launch("explorer")
@@ -92,6 +114,7 @@ Window {
                 event.accepted = true
             } else if (event.key === Qt.Key_Meta) {
                 root.searchOpen = false
+                root.quickSettingsOpen = false
                 root.startOpen = !root.startOpen
                 event.accepted = true
             }

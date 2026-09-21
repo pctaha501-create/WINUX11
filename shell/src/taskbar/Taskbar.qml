@@ -20,7 +20,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 16
-        width: Math.min(parent.width - 64, 980)
+        width: Math.min(parent.width - 32, 1180)
         height: 60
         radius: 20
         glassColor: "#E50A0E15"
@@ -34,7 +34,7 @@ Item {
             TaskbarButton {
                 width: 50
                 height: 50
-                iconSource: "qrc:/qt/qml/WINUX11/assets/icons/start.svg"
+                iconSource: "../../assets/icons/start.svg"
                 label: "Start"
                 active: root.startOpen
                 onClicked: root.startClicked()
@@ -43,7 +43,7 @@ Item {
             TaskbarButton {
                 width: 50
                 height: 50
-                iconSource: "qrc:/qt/qml/WINUX11/assets/icons/search.svg"
+                iconSource: "../../assets/icons/search.svg"
                 label: "Search"
                 active: root.searchOpen
                 onClicked: root.searchClicked()
@@ -59,7 +59,7 @@ Item {
             TaskbarButton {
                 width: 50
                 height: 50
-                iconSource: "qrc:/qt/qml/WINUX11/assets/icons/explorer.svg"
+                iconSource: "../../assets/icons/explorer.svg"
                 label: "Explorer"
                 onClicked: root.launch("explorer")
             }
@@ -67,7 +67,7 @@ Item {
             TaskbarButton {
                 width: 50
                 height: 50
-                iconSource: "qrc:/qt/qml/WINUX11/assets/icons/browser.svg"
+                iconSource: "../../assets/icons/browser.svg"
                 label: "Browser"
                 onClicked: root.launch("browser")
             }
@@ -75,7 +75,7 @@ Item {
             TaskbarButton {
                 width: 50
                 height: 50
-                iconSource: "qrc:/qt/qml/WINUX11/assets/icons/terminal.svg"
+                iconSource: "../../assets/icons/terminal.svg"
                 label: "Terminal"
                 onClicked: root.launch("terminal")
             }

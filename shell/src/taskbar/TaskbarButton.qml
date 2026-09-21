@@ -27,15 +27,15 @@ Item {
         Image {
             id: icon
             anchors.centerIn: parent
-            width: 32
-            height: 32
+            width: 34
+            height: 34
             source: root.iconSource
             sourceSize: Qt.size(96, 96)
             fillMode: Image.PreserveAspectFit
             smooth: true
             mipmap: true
             asynchronous: false
-            opacity: status === Image.Ready ? 1.0 : 0.0
+            visible: status === Image.Ready
         }
 
         Rectangle {
@@ -45,7 +45,7 @@ Item {
             radius: 8
             color: "transparent"
             border.width: 1
-            border.color: "#18FFFFFF"
+            border.color: "#35EAF2FF"
             visible: icon.status !== Image.Ready
         }
 
@@ -62,7 +62,7 @@ Item {
         anchors.top: parent.bottom
         anchors.topMargin: 5
         text: root.label
-        color: Theme.textPrimary
+        color: "#F5F7FA"
         font.pixelSize: 10
         font.weight: Font.Medium
         visible: mouse.containsMouse

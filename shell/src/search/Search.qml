@@ -68,8 +68,7 @@ Item {
                 font.pixelSize: 17
                 focus: root.open
                 clip: true
-                placeholderText: "Type to search..."
-                placeholderTextColor: Theme.textMuted
+                placeholderText: ""
             }
         }
 

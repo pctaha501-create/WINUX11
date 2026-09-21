@@ -12,8 +12,8 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick)
 
 qt_add_executable(WINUX11Shell
     src/main.cpp
-    src/services/AudioService.cpp
-    src/services/AudioService.h
+    src/services/SystemService.cpp
+    src/services/SystemService.h
 )
 
 qt_add_qml_module(WINUX11Shell
@@ -21,6 +21,7 @@ qt_add_qml_module(WINUX11Shell
     VERSION 1.0
     QML_FILES
         src/Main.qml
+        src/QuickSettings.qml
         src/ui/Theme.qml
         src/ui/GlassPanel.qml
         src/ui/IconButton.qml

@@ -5,6 +5,8 @@
 #include <QProcess>
 #include <QObject>
 
+#include "services/SystemService.h"
+
 class Launcher final : public QObject
 {
     Q_OBJECT
@@ -14,19 +16,18 @@ public:
 
     Q_INVOKABLE void openTerminal()
     {
-        QProcess::startDetached(QStringLiteral("x-terminal-emulator"), {});
+        QProcess::startDetached(QStringLiteral("x-terminal-emulator"));
     }
 
     Q_INVOKABLE void openExplorer()
     {
-        QProcess::startDetached(QStringLiteral("xdg-open"),
-                                 {QDir::homePath()});
+        QProcess::startDetached(QStringLiteral("xdg-open"), {QDir::homePath()});
     }
 
     Q_INVOKABLE void openBrowser()
     {
         QProcess::startDetached(QStringLiteral("xdg-open"),
-                                 {QStringLiteral("https://www.google.com")});
+                                {QStringLiteral("https://www.google.com")});
     }
 };
 
@@ -38,9 +39,11 @@ int main(int argc, char *argv[])
     app.setOrganizationName(QStringLiteral("WINUX11"));
 
     Launcher launcher;
+    SystemService systemService;
+
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty(QStringLiteral("launcher"), &launcher);
-
+    engine.rootContext()->setContextProperty(QStringLiteral("systemService"), &systemService);
     engine.loadFromModule(QStringLiteral("WINUX11"), QStringLiteral("Main"));
 
     if (engine.rootObjects().isEmpty())

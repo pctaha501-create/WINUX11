@@ -27,7 +27,6 @@ Item {
         borderColor: "#55FFFFFF"
         borderWidth: 1
 
-        // System controls stay on the right.
         SystemTray {
             id: systemTray
             anchors.right: parent.right
@@ -39,7 +38,6 @@ Item {
             onPanelToggled: root.quickSettingsOpen = !root.quickSettingsOpen
         }
 
-        // App launcher icons stay centered.
         Row {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter

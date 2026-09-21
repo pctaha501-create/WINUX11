@@ -15,21 +15,26 @@ Item {
     signal searchClicked()
     signal launch(string command)
 
+    Rectangle {
+        anchors.fill: parent
+        color: "#30040B10"
+    }
+
     GlassPanel {
         id: bar
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        width: Math.min(parent.width - 32, 1180)
-        height: 92
-        radius: 32
-        glassColor: "#B5163D49"
-        borderColor: "#A8DDF8FF"
+        width: Math.min(parent.width - 28, 900)
+        height: 68
+        radius: 24
+        glassColor: "#D51A3A46"
+        borderColor: "#70B8E7EF"
+
+        Behavior on width { NumberAnimation { duration: 220; easing.type: Easing.OutCubic } }
 
         Row {
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-            anchors.verticalCenter: parent.verticalCenter
-            spacing: 12
+            anchors.centerIn: parent
+            spacing: 9
 
             TaskbarButton {
                 iconSource: "qrc:/qt/qml/WINUX11/assets/icons/start.svg"
@@ -62,22 +67,18 @@ Item {
                 label: "Terminal"
                 onClicked: root.launch("terminal")
             }
-        }
 
-        Rectangle {
-            width: 1
-            height: 54
-            anchors.verticalCenter: parent.verticalCenter
-            x: 480
-            color: "#78D9F7FF"
-        }
+            Rectangle {
+                width: 1
+                height: 40
+                anchors.verticalCenter: parent.verticalCenter
+                color: "#55C9EEF7"
+            }
 
-        SystemTray {
-            anchors.right: parent.right
-            anchors.rightMargin: 18
-            anchors.verticalCenter: parent.verticalCenter
-            panelOpen: root.quickSettingsOpen
-            onPanelToggled: root.quickSettingsOpen = !root.quickSettingsOpen
+            SystemTray {
+                panelOpen: root.quickSettingsOpen
+                onPanelToggled: root.quickSettingsOpen = !root.quickSettingsOpen
+            }
         }
     }
 }

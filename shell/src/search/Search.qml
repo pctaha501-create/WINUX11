@@ -15,7 +15,7 @@ Item {
         width: 680; height: 500
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top; anchors.topMargin: 76
-        glassColor: "#F00A0E15"; borderColor: "#48FFFFFF"; radius: 28
+        glassColor: "#F00A0E15"; borderColor: "#58FFFFFF"; radius: 36
         scale: root.open ? 1 : 0.95; opacity: root.open ? 1 : 0
         Behavior on scale { NumberAnimation { duration: 190; easing.type: Easing.OutCubic } }
         Behavior on opacity { NumberAnimation { duration: 140 } }
@@ -23,7 +23,7 @@ Item {
         Text { x: 26; y: 22; text: "Search"; color: "#FFFFFF"; font.pixelSize: 23; font.weight: Font.DemiBold }
 
         Rectangle {
-            x: 26; y: 66; width: parent.width - 52; height: 54; radius: 24
+            x: 26; y: 66; width: parent.width - 52; height: 54; radius: 27
             color: "#14000000"; border.width: 1; border.color: "#32FFFFFF"
             Image { x: 16; anchors.verticalCenter: parent.verticalCenter; width: 23; height: 23; source: "qrc:/qt/qml/WINUX11/assets/icons/search.svg"; sourceSize: Qt.size(46,46) }
             TextInput { id: input; x: 52; anchors.verticalCenter: parent.verticalCenter; width: parent.width-68; color: "#FFFFFF"; selectionColor: Theme.accent; font.pixelSize: 16; focus: root.open; clip: true }
@@ -43,7 +43,7 @@ Item {
                 ]
                 delegate: Rectangle {
                     required property var modelData
-                    width: parent.width; height: 62; radius: 20
+                    width: parent.width; height: 62; radius: 24
                     color: mouse.containsMouse ? "#1CFFFFFF" : "#10000000"
                     border.width: 1; border.color: "#20FFFFFF"
                     Image { x: 14; anchors.verticalCenter: parent.verticalCenter; width: 28; height: 28; source: "qrc:/qt/qml/WINUX11/assets/icons/" + modelData.icon; sourceSize: Qt.size(56,56) }

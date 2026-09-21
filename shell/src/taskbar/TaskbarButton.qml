@@ -9,40 +9,56 @@ Item {
     property bool active: false
     signal clicked()
 
-    width: 62
-    height: 62
+    width: 72
+    height: 76
 
     Rectangle {
         id: bg
         anchors.fill: parent
-        radius: 18
-        color: root.active ? "#5547D7FF" : (mouse.containsMouse ? "#35FFFFFF" : "#182B4650")
-        border.width: root.active || mouse.containsMouse ? 1 : 0
-        border.color: "#78C7F4FF"
-        scale: mouse.pressed ? 0.90 : (mouse.containsMouse ? 1.06 : 1.0)
+        radius: 22
+        color: root.active ? "#705DE9FF" : (mouse.containsMouse ? "#5AFFFFFF" : "#281D6573")
+        border.width: root.active || mouse.containsMouse ? 1.5 : 1
+        border.color: root.active ? "#D9FFFFFF" : "#72C9F2FA"
+        scale: mouse.pressed ? 0.91 : (mouse.containsMouse ? 1.07 : 1.0)
 
-        Behavior on color { ColorAnimation { duration: 150 } }
-        Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.OutBack } }
+        Rectangle {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            height: 2
+            radius: 2
+            color: "#DFFFFFFF"
+            opacity: 0.65
+        }
 
         Image {
             anchors.centerIn: parent
-            width: 34
-            height: 34
+            width: 42
+            height: 42
             source: root.iconSource
-            sourceSize.width: 68
-            sourceSize.height: 68
+            sourceSize.width: 96
+            sourceSize.height: 96
             fillMode: Image.PreserveAspectFit
             smooth: true
             mipmap: true
-            asynchronous: true
         }
 
-        MouseArea {
-            id: mouse
-            anchors.fill: parent
-            hoverEnabled: true
-            onClicked: root.clicked()
+        Behavior on color { ColorAnimation { duration: 160 } }
+        Behavior on scale {
+            NumberAnimation { duration: 180; easing.type: Easing.OutBack }
         }
+    }
+
+    Rectangle {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 0
+        width: root.active ? 28 : 0
+        height: 3
+        radius: 3
+        color: Theme.accentBright
+
+        Behavior on width { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
     }
 
     Text {
@@ -52,6 +68,14 @@ Item {
         text: root.label
         color: Theme.textPrimary
         font.pixelSize: 11
-        visible: mouse.containsMouse && root.label.length > 0
+        font.weight: Font.DemiBold
+        visible: mouse.containsMouse
+    }
+
+    MouseArea {
+        id: mouse
+        anchors.fill: parent
+        hoverEnabled: true
+        onClicked: root.clicked()
     }
 }

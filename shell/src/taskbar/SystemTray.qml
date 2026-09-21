@@ -9,8 +9,14 @@ Item {
     property bool panelOpen: false
     signal panelToggled()
 
+    property bool networkEnabled: true
+    property bool bluetoothEnabled: false
+    property bool nightLightEnabled: false
+    property bool focusEnabled: false
+    property int displayVolume: audioService ? audioService.volume : 40
+
     Row {
-        anchors.right: parent.right
+        anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         spacing: 4
 
@@ -51,10 +57,10 @@ Item {
 
     GlassPanel {
         id: panel
-        z: 100
+        z: 1000
         width: 360
         height: 410
-        anchors.right: parent.right
+        anchors.left: parent.left
         anchors.bottom: parent.top
         anchors.bottomMargin: 10
         glassColor: "#F00A0E15"
@@ -62,7 +68,7 @@ Item {
         visible: root.panelOpen
         opacity: root.panelOpen ? 1 : 0
         scale: root.panelOpen ? 1 : 0.94
-        transformOrigin: Item.BottomRight
+        transformOrigin: Item.BottomLeft
 
         Behavior on opacity { NumberAnimation { duration: 150 } }
         Behavior on scale { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
@@ -93,10 +99,10 @@ Item {
 
             Repeater {
                 model: [
-                    {name:"Network", icon:"network.svg"},
-                    {name:"Bluetooth", icon:"bluetooth.svg"},
-                    {name:"Night light", icon:"moon.svg"},
-                    {name:"Focus", icon:"focus.svg"}
+                    {name:"Network", icon:"network.svg", key:"network"},
+                    {name:"Bluetooth", icon:"bluetooth.svg", key:"bluetooth"},
+                    {name:"Night light", icon:"moon.svg", key:"night"},
+                    {name:"Focus", icon:"focus.svg", key:"focus"}
                 ]
 
                 delegate: Rectangle {
@@ -104,9 +110,20 @@ Item {
                     width: 153
                     height: 72
                     radius: 15
-                    color: mouse.containsMouse ? "#22FFFFFF" : "#14000000"
+
+                    property bool enabledState:
+                        modelData.key === "network" ? root.networkEnabled :
+                        modelData.key === "bluetooth" ? root.bluetoothEnabled :
+                        modelData.key === "night" ? root.nightLightEnabled :
+                        root.focusEnabled
+
+                    color: enabledState
+                        ? "#304A6175"
+                        : (mouse.containsMouse ? "#22FFFFFF" : "#14000000")
                     border.width: 1
-                    border.color: "#28FFFFFF"
+                    border.color: enabledState ? "#65FFFFFF" : "#28FFFFFF"
+
+                    Behavior on color { ColorAnimation { duration: 120 } }
 
                     Image {
                         x: 15
@@ -125,10 +142,31 @@ Item {
                         font.pixelSize: 13
                     }
 
+                    Text {
+                        anchors.right: parent.right
+                        anchors.rightMargin: 12
+                        anchors.top: parent.top
+                        anchors.topMargin: 10
+                        text: enabledState ? "ON" : "OFF"
+                        color: "#FFFFFF"
+                        font.pixelSize: 9
+                        font.weight: Font.DemiBold
+                    }
+
                     MouseArea {
                         id: mouse
                         anchors.fill: parent
                         hoverEnabled: true
+                        onClicked: {
+                            if (modelData.key === "network")
+                                root.networkEnabled = !root.networkEnabled
+                            else if (modelData.key === "bluetooth")
+                                root.bluetoothEnabled = !root.bluetoothEnabled
+                            else if (modelData.key === "night")
+                                root.nightLightEnabled = !root.nightLightEnabled
+                            else
+                                root.focusEnabled = !root.focusEnabled
+                        }
                     }
                 }
             }
@@ -153,13 +191,14 @@ Item {
         Text {
             x: 22
             y: 326
-            text: audioService ? (audioService.muted ? "Muted" : audioService.volume + "%") : "40%"
+            text: displayVolume + "%"
             color: "#FFFFFF"
             font.pixelSize: 26
             font.weight: Font.DemiBold
         }
 
         Rectangle {
+            id: volumeTrack
             x: 22
             y: 370
             width: 316
@@ -168,10 +207,20 @@ Item {
             color: "#20FFFFFF"
 
             Rectangle {
-                width: parent.width * ((audioService ? audioService.volume : 40) / 100)
+                width: parent.width * (root.displayVolume / 100)
                 height: parent.height
                 radius: 4
                 color: Theme.accent
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onPressed: updateVolume(mouse.x)
+                onPositionChanged: if (pressed) updateVolume(mouse.x)
+
+                function updateVolume(x) {
+                    root.displayVolume = Math.max(0, Math.min(100, Math.round((x / volumeTrack.width) * 100)))
+                }
             }
         }
     }

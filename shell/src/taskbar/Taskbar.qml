@@ -27,11 +27,11 @@ Item {
         borderColor: "#55FFFFFF"
         borderWidth: 1
 
-        // System controls stay on the left.
+        // System controls stay on the right.
         SystemTray {
             id: systemTray
-            anchors.left: parent.left
-            anchors.leftMargin: 12
+            anchors.right: parent.right
+            anchors.rightMargin: 12
             anchors.verticalCenter: parent.verticalCenter
             width: 245
             height: 44

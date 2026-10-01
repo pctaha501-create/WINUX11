@@ -15,7 +15,17 @@ Window {
  property string activeApp:""
  property string activeTitle:""
  function launch(command) {
-  var titles = { explorer:"File Explorer", browser:"WINUX11 Browser", terminal:"WINUX11 Terminal", settings:"Settings", taskmanager:"Task Manager", editor:"Text Editor", calculator:"Calculator", network:"Network", security:"Security Center", notifications:"Notification Center", about:"About WINUX11", compatibility:"Windows Compatibility" }
+  var titles = {
+   explorer:"File Explorer", browser:"WINUX11 Browser", terminal:"WINUX11 Terminal",
+   settings:"Settings", taskmanager:"Task Manager", editor:"Text Editor", calculator:"Calculator",
+   network:"Network", security:"Security Center", notifications:"Notification Center",
+   about:"About WINUX11", compatibility:"Windows Compatibility",
+   disk:"Disk Management", storage:"Storage", wifi:"Wi-Fi Manager", bluetooth:"Bluetooth Manager",
+   updates:"System Updates", firewall:"Firewall Manager", accounts:"Users & Accounts",
+   startup:"Startup Apps", packages:"Package Manager", developer:"Developer Tools",
+   display:"Display", sound:"Sound Manager", screenshot:"Screenshot Tool",
+   clock:"Clock", calendar:"Calendar", privacy:"Privacy Center"
+  }
   activeApp = command
   activeTitle = titles[command] || "WINUX11"
   startOpen = false

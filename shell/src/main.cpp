@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("fileService", &fileService);
     engine.rootContext()->setContextProperty("calculatorService", &calculatorService);
 
-    engine.load(QUrl(QStringLiteral("qrc:/WINUX11-runtime/src/Main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/qt/qml/WINUX11/Main.qml")));
 
     if (engine.rootObjects().isEmpty())
         return 1;

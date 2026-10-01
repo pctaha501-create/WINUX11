@@ -7,152 +7,99 @@ Item {
     signal searchRequested()
     signal launch(string command)
 
-    width: 860
-    height: 610
+    visible: open
     opacity: open ? 1 : 0
     scale: open ? 1 : 0.96
-    visible: opacity > 0
-
-    Behavior on opacity { NumberAnimation { duration: 150 } }
-    Behavior on scale { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
+    Behavior on opacity { NumberAnimation { duration: 140 } }
+    Behavior on scale { NumberAnimation { duration: 160; easing.type: Easing.OutCubic } }
 
     GlassPanel {
         anchors.fill: parent
-        glassColor: "#F00B0F17"
-        borderColor: "#58FFFFFF"
-        radius: 30
+        radius: 28
+        glassColor: "#F20A1019"
+        borderColor: "#42FFFFFF"
 
-        Text {
-            x: 28
-            y: 22
-            text: "WINUX11"
-            color: Theme.textPrimary
-            font.pixelSize: 25
-            font.weight: Font.DemiBold
-        }
+        Column {
+            anchors.fill: parent
+            anchors.margins: 24
+            spacing: 18
 
-        Text {
-            x: 30
-            y: 56
-            text: "All applications"
-            color: Theme.textSecondary
-            font.pixelSize: 12
-        }
+            Row {
+                width: parent.width
+                spacing: 12
 
-        Rectangle {
-            x: 26
-            y: 88
-            width: parent.width - 52
-            height: 48
-            radius: 18
-            color: "#16000000"
-            border.width: 1
-            border.color: "#30FFFFFF"
-
-            Text {
-                anchors.verticalCenter: parent.verticalCenter
-                x: 18
-                text: "Search apps, files and settings"
-                color: Theme.textSecondary
-                font.pixelSize: 14
+                Rectangle {
+                    width: 44; height: 44; radius: 14
+                    color: Theme.accentSoft
+                    Text { anchors.centerIn: parent; text: "⊞"; color: Theme.textPrimary; font.pixelSize: 24 }
+                }
+                Column {
+                    anchors.verticalCenter: parent.verticalCenter
+                    Text { text: "WINUX11"; color: Theme.textPrimary; font.pixelSize: 17; font.weight: Font.DemiBold }
+                    Text { text: "Everything you need, one place."; color: Theme.textMuted; font.pixelSize: 10 }
+                }
             }
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: root.searchRequested()
-            }
-        }
-
-        GridView {
-            id: grid
-            x: 26
-            y: 160
-            width: parent.width - 52
-            height: parent.height - 180
-            cellWidth: 194
-            cellHeight: 78
-            clip: true
-            model: [
-                {name:"File Explorer",cmd:"explorer"},
-                {name:"Browser",cmd:"browser"},
-                {name:"Terminal",cmd:"terminal"},
-                {name:"Settings",cmd:"settings"},
-                {name:"Task Manager",cmd:"taskmanager"},
-                {name:"Text Editor",cmd:"editor"},
-                {name:"Calculator",cmd:"calculator"},
-                {name:"Network",cmd:"network"},
-                {name:"Security",cmd:"security"},
-                {name:"Notifications",cmd:"notifications"},
-                {name:"Audio",cmd:"audio"},
-                {name:"Photos",cmd:"photos"},
-                {name:"Media Player",cmd:"mediaplayer"},
-                {name:"Music Player",cmd:"musicplayer"},
-                {name:"App Store",cmd:"appstore"},
-                {name:"Downloader",cmd:"downloader"},
-                {name:"Archive Manager",cmd:"archivemanager"},
-                {name:"Printer Manager",cmd:"printermanager"},
-                {name:"Disk Management",cmd:"diskmanagement"},
-                {name:"Storage Manager",cmd:"storagemanager"},
-                {name:"Bluetooth",cmd:"bluetooth"},
-                {name:"Wi-Fi",cmd:"wifi"},
-                {name:"Users & Accounts",cmd:"users"},
-                {name:"Password Manager",cmd:"passwordmanager"},
-                {name:"Privacy Center",cmd:"privacy"},
-                {name:"Firewall",cmd:"firewall"},
-                {name:"Threat Center",cmd:"threatcenter"},
-                {name:"System Search",cmd:"systemsearch"},
-                {name:"System Tools",cmd:"systemtools"},
-                {name:"Calendar",cmd:"calendar"},
-                {name:"Clock & Alarms",cmd:"clock"},
-                {name:"Camera",cmd:"camera"},
-                {name:"Voice Recorder",cmd:"voicerecorder"},
-                {name:"Clipboard",cmd:"clipboard"},
-                {name:"Sticky Notes",cmd:"stickynotes"},
-                {name:"Maps",cmd:"maps"},
-                {name:"Mail",cmd:"mail"},
-                {name:"Messaging",cmd:"messaging"},
-                {name:"Remote Desktop",cmd:"remotedesktop"},
-                {name:"Screenshot",cmd:"screenshot"},
-                {name:"System Update",cmd:"updates"},
-                {name:"Package Manager",cmd:"packages"},
-                {name:"Developer Tools",cmd:"developer"},
-                {name:"Startup Apps",cmd:"startup"},
-                {name:"Virtual Desktops",cmd:"virtualdesktops"},
-                {name:"Snap Manager",cmd:"snap"},
-                {name:"Notification Center",cmd:"notificationcenter"},
-                {name:"Personalization",cmd:"personalization"},
-                {name:"Display",cmd:"display"},
-                {name:"Sound",cmd:"sound"},
-                {name:"Game / Proton",cmd:"games"},
-                {name:"Windows Apps",cmd:"wine"},
-                {name:"About WINUX11",cmd:"about"}
-            ]
-
-            delegate: Rectangle {
-                required property var modelData
-                width: 182
-                height: 66
-                radius: 18
-                color: mouse.containsMouse ? "#20FFFFFF" : "#10000000"
+            Rectangle {
+                width: parent.width
+                height: 48
+                radius: 16
+                color: "#12FFFFFF"
                 border.width: 1
-                border.color: "#24FFFFFF"
+                border.color: "#22FFFFFF"
+                Text { x: 16; anchors.verticalCenter: parent.verticalCenter; text: "⌕   Search apps, settings and files"; color: Theme.textMuted; font.pixelSize: 12 }
+                MouseArea { anchors.fill: parent; onClicked: root.searchRequested() }
+            }
 
-                Text {
-                    anchors.centerIn: parent
-                    width: parent.width - 24
-                    text: modelData.name
-                    color: Theme.textPrimary
-                    font.pixelSize: 13
-                    horizontalAlignment: Text.AlignHCenter
-                    wrapMode: Text.WordWrap
-                }
+            Text { text: "Pinned"; color: Theme.textSecondary; font.pixelSize: 11; font.weight: Font.Medium }
 
-                MouseArea {
-                    id: mouse
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked: root.launch(modelData.cmd)
+            Grid {
+                width: parent.width
+                columns: 4
+                rowSpacing: 10
+                columnSpacing: 10
+
+                Repeater {
+                    model: [
+                        {n:"Explorer",g:"▣",c:"explorer"},
+                        {n:"Browser",g:"◉",c:"browser"},
+                        {n:"Terminal",g:">_",c:"terminal"},
+                        {n:"Settings",g:"⚙",c:"settings"},
+                        {n:"Calculator",g:"＋",c:"calculator"},
+                        {n:"Editor",g:"✎",c:"editor"},
+                        {n:"Network",g:"⌁",c:"network"},
+                        {n:"Security",g:"◈",c:"security"}
+                    ]
+                    delegate: Rectangle {
+                        width: (parent.width - 30) / 4
+                        height: 86
+                        radius: 18
+                        color: mouse.containsMouse ? "#1DFFFFFF" : "#0CFFFFFF"
+                        border.width: 1
+                        border.color: "#18FFFFFF"
+                        Text { anchors.horizontalCenter: parent.horizontalCenter; y: 15; text: modelData.g; color: Theme.textPrimary; font.pixelSize: 24 }
+                        Text { anchors.horizontalCenter: parent.horizontalCenter; bottom: parent.bottom; bottomMargin: 14; text: modelData.n; color: Theme.textSecondary; font.pixelSize: 10 }
+                        MouseArea { id: mouse; anchors.fill: parent; hoverEnabled: true; onClicked: root.launch(modelData.c) }
+                    }
                 }
+            }
+
+            Row {
+                width: parent.width
+                spacing: 10
+                Text { text: "Recommended"; color: Theme.textSecondary; font.pixelSize: 11; font.weight: Font.Medium }
+                Item { width: 1; height: 1 }
+                Text { text: "2 items"; color: Theme.textMuted; font.pixelSize: 10 }
+            }
+
+            Rectangle {
+                width: parent.width
+                height: 58
+                radius: 16
+                color: "#0CFFFFFF"
+                Text { x: 14; anchors.verticalCenter: parent.verticalCenter; text: "⚙  Finish WINUX11 setup"; color: Theme.textPrimary; font.pixelSize: 11 }
+                Text { x: 14; anchors.verticalCenter: parent.verticalCenter; anchors.verticalCenterOffset: 16; text: "Review system preferences"; color: Theme.textMuted; font.pixelSize: 9 }
+                MouseArea { anchors.fill: parent; onClicked: root.launch("settings") }
             }
         }
     }

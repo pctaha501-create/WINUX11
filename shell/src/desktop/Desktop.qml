@@ -3,8 +3,6 @@ import WINUX11 1.0
 
 Item {
     id: root
-    anchors.fill: parent
-
     signal desktopClicked()
 
     Rectangle {
@@ -14,70 +12,73 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-
         gradient: Gradient {
-            GradientStop { position: 0.0; color: "#101A2B" }
-            GradientStop { position: 0.48; color: "#080D16" }
+            GradientStop { position: 0.0; color: "#101827" }
+            GradientStop { position: 0.45; color: "#080D16" }
             GradientStop { position: 1.0; color: "#03050A" }
         }
     }
 
     Rectangle {
-        width: 560
-        height: 560
-        radius: width / 2
-        x: parent.width - 360
-        y: -210
-        color: "#111D35"
-        opacity: 0.48
+        width: parent.width * 0.55
+        height: parent.height * 0.7
+        x: parent.width * 0.35
+        y: -parent.height * 0.18
+        radius: width
+        color: "#143C6FA8"
+        opacity: 0.34
     }
 
     Rectangle {
-        width: 420
-        height: 420
-        radius: width / 2
-        x: -190
-        y: parent.height - 240
-        color: "#0B1727"
-        opacity: 0.58
+        width: parent.width * 0.38
+        height: parent.height * 0.58
+        x: -parent.width * 0.14
+        y: parent.height * 0.38
+        radius: width
+        color: "#122E6A55"
+        opacity: 0.24
     }
 
     Column {
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.leftMargin: 38
-        anchors.topMargin: 34
-        spacing: 5
+        x: 34
+        y: 30
+        spacing: 4
 
         Text {
             text: "WINUX11"
-            color: Theme.textPrimary
-            font.pixelSize: 22
+            color: "#EAF1FF"
+            font.pixelSize: 13
             font.weight: Font.DemiBold
+            opacity: 0.85
         }
-
         Text {
-            text: "A familiar desktop. Built from the ground up."
+            text: "A desktop built around your workflow."
             color: Theme.textMuted
-            font.pixelSize: 12
+            font.pixelSize: 11
         }
     }
 
-    Text {
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.verticalCenterOffset: -42
-        text: "WINUX11"
-        color: "#FFFFFF"
-        opacity: 0.035
-        font.pixelSize: 170
-        font.weight: Font.Black
+    Row {
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.rightMargin: 34
+        anchors.topMargin: 30
+        spacing: 8
+
+        Rectangle {
+            width: 8; height: 8; radius: 4
+            color: Theme.success
+            anchors.verticalCenter: parent.verticalCenter
+        }
+        Text {
+            text: "System online"
+            color: Theme.textSecondary
+            font.pixelSize: 11
+        }
     }
 
-    // Clicking anywhere on the desktop closes open shell menus/panels.
     MouseArea {
         anchors.fill: parent
-        z: 100
         onClicked: root.desktopClicked()
     }
 }

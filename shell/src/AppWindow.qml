@@ -31,90 +31,65 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: "#66000000"
+        color: "#44000000"
     }
 
     GlassPanel {
         id: frame
-        width: Math.min(parent.width - 72, 1180)
-        height: Math.min(parent.height - 132, 700)
+        width: Math.min(parent.width - 90, 1180)
+        height: Math.min(parent.height - 155, 690)
         anchors.centerIn: parent
         radius: 26
-        glassColor: "#F20B1019"
-        borderColor: "#55FFFFFF"
-        borderWidth: 1
+        glassColor: "#F20B1018"
+        borderColor: "#48FFFFFF"
 
         Rectangle {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
-            height: 62
+            height: 60
             radius: 26
-            color: "#16000000"
+            color: "#10000000"
 
             Text {
-                x: 24
+                x: 22
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.title
                 color: Theme.textPrimary
-                font.pixelSize: 17
+                font.pixelSize: 15
                 font.weight: Font.DemiBold
-            }
-
-            Text {
-                x: 24
-                anchors.top: parent.verticalCenter
-                anchors.topMargin: 8
-                text: root.appId
-                color: Theme.textMuted
-                font.pixelSize: 9
-                visible: root.appId.length > 0
             }
 
             Row {
                 anchors.right: parent.right
-                anchors.rightMargin: 14
+                anchors.rightMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: 6
+                spacing: 5
 
                 Rectangle {
-                    width: 36
-                    height: 36
-                    radius: 12
+                    width: 34; height: 34; radius: 11
                     color: minMouse.containsMouse ? "#20FFFFFF" : "transparent"
                     Text { anchors.centerIn: parent; text: "—"; color: Theme.textPrimary; font.pixelSize: 18 }
                     MouseArea { id: minMouse; anchors.fill: parent; hoverEnabled: true; onClicked: root.minimized() }
                 }
 
                 Rectangle {
-                    width: 36
-                    height: 36
-                    radius: 12
-                    color: closeMouse.containsMouse ? "#35E85A67" : "transparent"
-                    Text { anchors.centerIn: parent; text: "×"; color: Theme.textPrimary; font.pixelSize: 23 }
+                    width: 34; height: 34; radius: 11
+                    color: closeMouse.containsMouse ? "#40F16C78" : "transparent"
+                    Text { anchors.centerIn: parent; text: "×"; color: Theme.textPrimary; font.pixelSize: 21 }
                     MouseArea { id: closeMouse; anchors.fill: parent; hoverEnabled: true; onClicked: root.closed() }
                 }
             }
         }
 
         Loader {
-            id: appLoader
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            anchors.topMargin: 62
+            anchors.topMargin: 60
             source: root.appId.length > 0 ? root.appSource(root.appId) : ""
-
-            onLoaded: {
-                if (item && item.hasOwnProperty("appTitle"))
-                    item.appTitle = root.title
-            }
-
-            onStatusChanged: {
-                if (status === Loader.Error)
-                    console.log("WINUX11: failed to load app", root.appId, source)
-            }
+            onStatusChanged: if (status === Loader.Error) console.log("WINUX11 app load failed:", source)
         }
     }
 }

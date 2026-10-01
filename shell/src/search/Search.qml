@@ -5,53 +5,93 @@ Item {
     id: root
     property bool open: false
     signal launch(string command)
-    anchors.fill: parent
+
     visible: open
     opacity: open ? 1 : 0
+    anchors.fill: parent
 
-    Rectangle { anchors.fill: parent; color: "#70000000"; visible: root.open }
+    Rectangle { anchors.fill: parent; color: "#88000000" }
 
     GlassPanel {
-        width: 680; height: 500
+        width: Math.min(parent.width - 120, 820)
+        height: 520
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top; anchors.topMargin: 76
-        glassColor: "#F00A0E15"; borderColor: "#58FFFFFF"; radius: 36
-        scale: root.open ? 1 : 0.95; opacity: root.open ? 1 : 0
-        Behavior on scale { NumberAnimation { duration: 190; easing.type: Easing.OutCubic } }
-        Behavior on opacity { NumberAnimation { duration: 140 } }
-
-        Text { x: 26; y: 22; text: "Search"; color: "#FFFFFF"; font.pixelSize: 23; font.weight: Font.DemiBold }
-
-        Rectangle {
-            x: 26; y: 66; width: parent.width - 52; height: 54; radius: 27
-            color: "#14000000"; border.width: 1; border.color: "#32FFFFFF"
-            Image { x: 16; anchors.verticalCenter: parent.verticalCenter; width: 23; height: 23; source: "qrc:/qt/qml/WINUX11/assets/icons/search.svg"; sourceSize: Qt.size(46,46) }
-            TextInput { id: input; x: 52; anchors.verticalCenter: parent.verticalCenter; width: parent.width-68; color: "#FFFFFF"; selectionColor: Theme.accent; font.pixelSize: 16; focus: root.open; clip: true }
-            Text { x: 52; anchors.verticalCenter: parent.verticalCenter; width: parent.width-68; text: "Type to search..."; color: "#FFFFFF"; font.pixelSize: 16; visible: input.text.length === 0; clip: true }
-        }
-
-        Text { x: 28; y: 143; text: input.text.length === 0 ? "Quick actions" : "Results"; color: "#FFFFFF"; font.pixelSize: 13 }
+        anchors.top: parent.top
+        anchors.topMargin: 70
+        radius: 28
+        glassColor: "#F20A1019"
+        borderColor: "#45FFFFFF"
 
         Column {
-            x: 26; y: 176; width: parent.width-52; spacing: 8
-            Repeater {
-                model: [
-                    {name:"File Explorer",desc:"Browse files and folders",icon:"explorer.svg",cmd:"explorer"},
-                    {name:"Terminal",desc:"Open the WINUX11 terminal",icon:"terminal.svg",cmd:"terminal"},
-                    {name:"Settings",desc:"System settings",icon:"settings.svg",cmd:"settings"},
-                    {name:"Browser",desc:"Open the web browser",icon:"browser.svg",cmd:"browser"}
-                ]
-                delegate: Rectangle {
-                    required property var modelData
-                    width: parent.width; height: 62; radius: 24
-                    color: mouse.containsMouse ? "#1CFFFFFF" : "#10000000"
-                    border.width: 1; border.color: "#20FFFFFF"
-                    Image { x: 14; anchors.verticalCenter: parent.verticalCenter; width: 28; height: 28; source: "qrc:/qt/qml/WINUX11/assets/icons/" + modelData.icon; sourceSize: Qt.size(56,56) }
-                    Text { x: 55; y: 11; text: modelData.name; color: "#FFFFFF"; font.pixelSize: 14 }
-                    Text { x: 55; y: 34; text: modelData.desc; color: "#FFFFFF"; font.pixelSize: 11 }
-                    MouseArea { id: mouse; anchors.fill: parent; hoverEnabled: true; onClicked: root.launch(modelData.cmd) }
+            anchors.fill: parent
+            anchors.margins: 24
+            spacing: 16
+
+            Rectangle {
+                width: parent.width
+                height: 58
+                radius: 18
+                color: "#18FFFFFF"
+                border.width: 1
+                border.color: "#28FFFFFF"
+
+                TextInput {
+                    id: input
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.leftMargin: 18
+                    anchors.rightMargin: 18
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: Theme.textPrimary
+                    selectionColor: Theme.accent
+                    font.pixelSize: 16
+                    focus: root.open
+                    onTextChanged: results.visible = text.length > 0
+                }
+                Text {
+                    anchors.left: input.left
+                    anchors.verticalCenter: input.verticalCenter
+                    text: "Search apps, settings and files"
+                    color: Theme.textMuted
+                    font.pixelSize: 14
+                    visible: input.text.length === 0
+                }
+            }
+
+            Text { text: input.text.length ? "Results" : "Quick launch"; color: Theme.textSecondary; font.pixelSize: 11 }
+
+            Column {
+                id: results
+                width: parent.width
+                spacing: 8
+                visible: true
+
+                Repeater {
+                    model: [
+                        {n:"File Explorer",d:"Browse files and folders",g:"▣",c:"explorer"},
+                        {n:"Settings",d:"System configuration",g:"⚙",c:"settings"},
+                        {n:"Terminal",d:"Command line",g:">_",c:"terminal"},
+                        {n:"Task Manager",d:"Processes and resources",g:"▤",c:"taskmanager"},
+                        {n:"Browser",d:"Web browser",g:"◉",c:"browser"}
+                    ]
+                    delegate: Rectangle {
+                        width: results.width
+                        height: 54
+                        radius: 14
+                        color: mouse.containsMouse ? "#18FFFFFF" : "#0AFFFFFF"
+                        Text { x: 16; anchors.verticalCenter: parent.verticalCenter; text: modelData.g; color: Theme.textPrimary; font.pixelSize: 19 }
+                        Text { x: 54; y: 10; text: modelData.n; color: Theme.textPrimary; font.pixelSize: 11; font.weight: Font.Medium }
+                        Text { x: 54; y: 29; text: modelData.d; color: Theme.textMuted; font.pixelSize: 9 }
+                        MouseArea { id: mouse; anchors.fill: parent; hoverEnabled: true; onClicked: root.launch(modelData.c) }
+                    }
                 }
             }
         }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        z: -1
+        onClicked: root.open = false
     }
 }

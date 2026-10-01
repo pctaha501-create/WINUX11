@@ -6,105 +6,107 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.bottom: parent.bottom
-    height: 76
+    height: 84
 
     property bool startOpen: false
     property bool searchOpen: false
     property bool quickSettingsOpen: false
-
     signal startClicked()
     signal searchClicked()
     signal launch(string command)
 
     GlassPanel {
-        id: bar
-        width: Math.min(parent.width - 48, 1120)
-        height: 58
+        id: dock
+        width: Math.min(parent.width - 56, 980)
+        height: 64
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        radius: 20
-        glassColor: "#D90A0F18"
-        borderColor: "#42FFFFFF"
-        borderWidth: 1
+        anchors.bottomMargin: 12
+        radius: 22
+        glassColor: "#E80A0F18"
+        borderColor: "#38FFFFFF"
 
         Row {
-            id: left
-            anchors.left: parent.left
-            anchors.leftMargin: 12
-            anchors.verticalCenter: parent.verticalCenter
-            spacing: 5
-
-            TaskbarButton {
-                width: 42; height: 42
-                iconSource: "../assets/icons/start.svg"
-                label: "Start"
-                active: root.startOpen
-                onClicked: root.startClicked()
-            }
-
-            TaskbarButton {
-                width: 42; height: 42
-                iconSource: "../assets/icons/search.svg"
-                label: "Search"
-                active: root.searchOpen
-                onClicked: root.searchClicked()
-            }
-        }
-
-        Row {
-            id: apps
-            anchors.centerIn: parent
+            anchors.fill: parent
+            anchors.margins: 8
             spacing: 4
 
             TaskbarButton {
-                width: 42; height: 42
-                iconSource: "../assets/icons/explorer.svg"
-                label: "Explorer"
-                onClicked: root.launch("explorer")
+                glyph: "⊞"; label: "Start"; active: root.startOpen
+                onClicked: root.startClicked()
+            }
+            TaskbarButton {
+                glyph: "⌕"; label: "Search"; active: root.searchOpen
+                onClicked: root.searchClicked()
+            }
+
+            Rectangle {
+                width: 1; height: 30
+                anchors.verticalCenter: parent.verticalCenter
+                color: "#24FFFFFF"
+            }
+
+            Row {
+                id: apps
+                width: Math.max(0, parent.width - 360)
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: 3
+
+                TaskbarButton { glyph: "▣"; label: "File Explorer"; onClicked: root.launch("explorer") }
+                TaskbarButton { glyph: "◉"; label: "Browser"; onClicked: root.launch("browser") }
+                TaskbarButton { glyph: ">_"; label: "Terminal"; onClicked: root.launch("terminal") }
+                TaskbarButton { glyph: "⚙"; label: "Settings"; onClicked: root.launch("settings") }
+                TaskbarButton { glyph: "▤"; label: "Task Manager"; onClicked: root.launch("taskmanager") }
+            }
+
+            Item { width: 1; height: 1; Layout.fillWidth: true }
+
+            Rectangle {
+                width: 1; height: 30
+                anchors.verticalCenter: parent.verticalCenter
+                color: "#24FFFFFF"
             }
 
             TaskbarButton {
-                width: 42; height: 42
-                iconSource: "../assets/icons/browser.svg"
-                label: "Browser"
-                onClicked: root.launch("browser")
+                glyph: "⌁"; label: "Network"; active: root.quickSettingsOpen
+                onClicked: root.quickSettingsOpen = !root.quickSettingsOpen
             }
-
             TaskbarButton {
-                width: 42; height: 42
-                iconSource: "../assets/icons/terminal.svg"
-                label: "Terminal"
-                onClicked: root.launch("terminal")
+                glyph: "◖"; label: "Volume"; active: root.quickSettingsOpen
+                onClicked: root.quickSettingsOpen = !root.quickSettingsOpen
             }
-
             TaskbarButton {
-                width: 42; height: 42
-                iconSource: "../assets/icons/settings.svg"
-                label: "Settings"
-                onClicked: root.launch("settings")
+                glyph: "◐"; label: "Quick Settings"; active: root.quickSettingsOpen
+                onClicked: root.quickSettingsOpen = !root.quickSettingsOpen
             }
-        }
 
-        Rectangle {
-            id: divider
-            width: 1
-            height: 30
-            anchors.right: tray.left
-            anchors.rightMargin: 10
-            anchors.verticalCenter: parent.verticalCenter
-            color: "#35FFFFFF"
-        }
+            Column {
+                width: 74
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: 1
 
-        SystemTray {
-            id: tray
-            width: 285
-            height: 46
-            anchors.right: parent.right
-            anchors.rightMargin: 10
-            anchors.verticalCenter: parent.verticalCenter
-            panelOpen: root.quickSettingsOpen
-            onPanelToggled: root.quickSettingsOpen = !root.quickSettingsOpen
+                Text {
+                    width: parent.width
+                    text: Qt.formatTime(new Date(), "HH:mm")
+                    color: Theme.textPrimary
+                    font.pixelSize: 13
+                    font.weight: Font.DemiBold
+                    horizontalAlignment: Text.AlignHCenter
+                }
+                Text {
+                    width: parent.width
+                    text: Qt.formatDate(new Date(), "dd MMM")
+                    color: Theme.textMuted
+                    font.pixelSize: 9
+                    horizontalAlignment: Text.AlignHCenter
+                }
+                Timer {
+                    interval: 1000
+                    repeat: true
+                    running: true
+                    onTriggered: parent.children[0].text = Qt.formatTime(new Date(), "HH:mm")
+                }
+            }
         }
     }
 }

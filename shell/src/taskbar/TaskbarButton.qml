@@ -47,8 +47,23 @@ Item {
         }
     }
 
-    ToolTip {
+    Rectangle {
         visible: mouse.containsMouse && root.label.length > 0
-        text: root.label
+        x: (parent.width - width) / 2
+        y: -34
+        width: Math.max(70, tooltipText.implicitWidth + 18)
+        height: 26
+        radius: 9
+        color: "#F20A0F18"
+        border.width: 1
+        border.color: "#30FFFFFF"
+
+        Text {
+            id: tooltipText
+            anchors.centerIn: parent
+            text: root.label
+            color: Theme.textPrimary
+            font.pixelSize: 9
+        }
     }
 }

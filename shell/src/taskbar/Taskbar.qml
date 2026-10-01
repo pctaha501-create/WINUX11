@@ -31,14 +31,8 @@ Item {
             anchors.margins: 8
             spacing: 4
 
-            TaskbarButton {
-                glyph: "⊞"; label: "Start"; active: root.startOpen
-                onClicked: root.startClicked()
-            }
-            TaskbarButton {
-                glyph: "⌕"; label: "Search"; active: root.searchOpen
-                onClicked: root.searchClicked()
-            }
+            TaskbarButton { glyph: "⊞"; label: "Start"; active: root.startOpen; onClicked: root.startClicked() }
+            TaskbarButton { glyph: "⌕"; label: "Search"; active: root.searchOpen; onClicked: root.searchClicked() }
 
             Rectangle {
                 width: 1; height: 30
@@ -47,11 +41,9 @@ Item {
             }
 
             Row {
-                id: apps
-                width: Math.max(0, parent.width - 360)
+                width: 300
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 3
-
                 TaskbarButton { glyph: "▣"; label: "File Explorer"; onClicked: root.launch("explorer") }
                 TaskbarButton { glyph: "◉"; label: "Browser"; onClicked: root.launch("browser") }
                 TaskbarButton { glyph: ">_"; label: "Terminal"; onClicked: root.launch("terminal") }
@@ -59,7 +51,10 @@ Item {
                 TaskbarButton { glyph: "▤"; label: "Task Manager"; onClicked: root.launch("taskmanager") }
             }
 
-            Item { width: 1; height: 1; Layout.fillWidth: true }
+            Item {
+                width: Math.max(0, dock.width - 8 - 44 - 44 - 1 - 300 - 1 - 44 - 44 - 44 - 84 - 28)
+                height: 1
+            }
 
             Rectangle {
                 width: 1; height: 30
@@ -67,18 +62,9 @@ Item {
                 color: "#24FFFFFF"
             }
 
-            TaskbarButton {
-                glyph: "⌁"; label: "Network"; active: root.quickSettingsOpen
-                onClicked: root.quickSettingsOpen = !root.quickSettingsOpen
-            }
-            TaskbarButton {
-                glyph: "◖"; label: "Volume"; active: root.quickSettingsOpen
-                onClicked: root.quickSettingsOpen = !root.quickSettingsOpen
-            }
-            TaskbarButton {
-                glyph: "◐"; label: "Quick Settings"; active: root.quickSettingsOpen
-                onClicked: root.quickSettingsOpen = !root.quickSettingsOpen
-            }
+            TaskbarButton { glyph: "⌁"; label: "Network"; active: root.quickSettingsOpen; onClicked: root.quickSettingsOpen = !root.quickSettingsOpen }
+            TaskbarButton { glyph: "◖"; label: "Volume"; active: root.quickSettingsOpen; onClicked: root.quickSettingsOpen = !root.quickSettingsOpen }
+            TaskbarButton { glyph: "◐"; label: "Control Center"; active: root.quickSettingsOpen; onClicked: root.quickSettingsOpen = !root.quickSettingsOpen }
 
             Column {
                 width: 74
@@ -86,6 +72,7 @@ Item {
                 spacing: 1
 
                 Text {
+                    id: clockText
                     width: parent.width
                     text: Qt.formatTime(new Date(), "HH:mm")
                     color: Theme.textPrimary
@@ -104,7 +91,7 @@ Item {
                     interval: 1000
                     repeat: true
                     running: true
-                    onTriggered: parent.children[0].text = Qt.formatTime(new Date(), "HH:mm")
+                    onTriggered: clockText.text = Qt.formatTime(new Date(), "HH:mm")
                 }
             }
         }

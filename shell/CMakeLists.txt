@@ -22,7 +22,7 @@ set(WINUX11_QML_FILES
     src/apps/TerminalApp.qml src/apps/BrowserApp.qml src/apps/ExplorerApp.qml src/apps/SettingsApp.qml
     src/apps/TaskManagerApp.qml src/apps/TextEditorApp.qml src/apps/CalculatorApp.qml src/apps/NetworkApp.qml
     src/apps/SecurityApp.qml src/apps/NotificationsApp.qml src/apps/AboutApp.qml src/apps/CompatibilityApp.qml
-    src/apps/GenericApp.qml
+    src/apps/GenericApp.qml src/apps/SystemToolApp.qml
 )
 qt_add_qml_module(WINUX11Shell
     URI WINUX11 VERSION 1.0 QML_FILES ${WINUX11_QML_FILES}

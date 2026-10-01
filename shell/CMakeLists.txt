@@ -22,6 +22,10 @@ qt_add_executable(WINUX11Shell
     src/services/CalculatorService.h
 )
 
+file(GLOB_RECURSE WINUX11_QML_RUNTIME_FILES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.qml"
+)
+
 qt_add_qml_module(WINUX11Shell
     URI WINUX11
     VERSION 1.0
@@ -65,6 +69,11 @@ qt_add_qml_module(WINUX11Shell
         assets/icons/focus.svg
         assets/icons/settings.svg
         assets/icons/notifications.svg
+)
+
+qt_add_resources(WINUX11Shell WINUX11_QML_RUNTIME
+    PREFIX "/WINUX11-runtime"
+    FILES ${WINUX11_QML_RUNTIME_FILES}
 )
 
 target_link_libraries(WINUX11Shell PRIVATE

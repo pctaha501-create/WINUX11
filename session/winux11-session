@@ -1,18 +1,59 @@
 #!/bin/sh
 set -eu
+
 export XDG_CURRENT_DESKTOP=WINUX11
 export XDG_SESSION_DESKTOP=WINUX11
 export XDG_CURRENT_SESSION_TYPE=wayland
 export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 export WAYLAND_DISPLAY=winux11-0
-WINUX11Compositor &
+
+WINUX11_PREFIX="\${WINUX11_PREFIX:-/usr/local}"
+COMPOSITOR="\${WINUX11_COMPOSITOR:-\${WINUX11_PREFIX}/bin/WINUX11Compositor}"
+SHELL="\${WINUX11_SHELL:-\${WINUX11_PREFIX}/bin/WINUX11Shell}"
+
+if [ ! -x "$COMPOSITOR" ]; then
+    echo "WINUX11: compositor not found: $COMPOSITOR" >&2
+    exit 1
+fi
+
+if [ ! -x "$SHELL" ]; then
+    echo "WINUX11: shell not found: $SHELL" >&2
+    exit 1
+fi
+
+"$COMPOSITOR" &
 COMPOSITOR_PID=$!
-cleanup(){ kill "$COMPOSITOR_PID" 2>/dev/null || true; }
+SHELL_PID=""
+
+cleanup() {
+    if [ -n "$SHELL_PID" ]; then
+        kill "$SHELL_PID" 2>/dev/null || true
+    fi
+    kill "$COMPOSITOR_PID" 2>/dev/null || true
+}
 trap cleanup EXIT INT TERM
-for i in $(seq 1 50); do
-  if [ -S "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/winux11-0" ]; then break; fi
-  sleep 0.1
+
+runtime_dir="\${XDG_RUNTIME_DIR:-/run/user/\$(id -u)}"
+socket="$runtime_dir/$WAYLAND_DISPLAY"
+
+ready=0
+for _ in \$(seq 1 100); do
+    if [ -S "$socket" ]; then
+        ready=1
+        break
+    fi
+    if ! kill -0 "$COMPOSITOR_PID" 2>/dev/null; then
+        echo "WINUX11: compositor exited before Wayland socket was ready." >&2
+        exit 1
+    fi
+    sleep 0.1
 done
-WINUX11Shell &
+
+if [ "$ready" -ne 1 ]; then
+    echo "WINUX11: timed out waiting for $socket" >&2
+    exit 1
+fi
+
+"$SHELL" &
 SHELL_PID=$!
 wait "$SHELL_PID"

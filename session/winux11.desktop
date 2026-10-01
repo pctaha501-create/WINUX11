@@ -1,7 +1,8 @@
 [Desktop Entry]
 Name=WINUX11
 Comment=WINUX11 desktop session
-Exec=winux11-session
+Exec=/bin/sh /usr/local/bin/winux11-session
 Type=Application
 DesktopNames=WINUX11
 X-GDM-SessionRegisters=true
+X-GDM-Session-Type=wayland

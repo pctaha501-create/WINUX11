@@ -7,8 +7,8 @@ Item {
     required property var shellSurface
     required property var toplevel
 
-    width: Math.max(420, shellItem.width)
-    height: Math.max(300, shellItem.height + titleBar.height)
+    width: 720
+    height: 480
     clip: true
 
     Rectangle {
@@ -85,8 +85,7 @@ Item {
         height: Math.max(1, frame.height - titleBar.height - 1)
         shellSurface: frame.shellSurface
         moveItem: frame
-        onSurfaceDestroyed: {
-            frame.destroy()
-        }
+
+        onSurfaceDestroyed: frame.destroy()
     }
 }

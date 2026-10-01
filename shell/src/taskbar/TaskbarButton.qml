@@ -1,9 +1,10 @@
 import QtQuick
+import QtQuick.Controls
 import WINUX11 1.0
 
 Item {
     id: root
-    property string glyph: "•"
+    property string glyph: "◆"
     property string label: ""
     property string iconSource: ""
     property bool active: false

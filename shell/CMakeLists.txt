@@ -66,7 +66,7 @@ set_source_files_properties(src/apps/TerminalApp.qml src/apps/BrowserApp.qml src
 qt_add_qml_module(WINUX11Shell
     URI WINUX11
     VERSION 1.0
-    QML_FILES \${WINUX11_QML_FILES}
+    QML_FILES ${WINUX11_QML_FILES}
     RESOURCES
         assets/icons/start.svg
         assets/icons/search.svg

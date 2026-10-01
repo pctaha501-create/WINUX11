@@ -26,18 +26,28 @@ Window {
     }
 
     function launch(command) {
-        const titles = {
-            terminal:"Terminal", explorer:"File Explorer", browser:"WINUX Browser",
+        var titles = {
+            terminal:"Terminal", explorer:"File Explorer", browser:"WINUX11 Browser",
             settings:"Settings", taskmanager:"Task Manager", editor:"Text Editor",
             calculator:"Calculator", network:"Network", security:"Security",
-            notifications:"Notifications", about:"About WINUX11", audio:"Audio"
+            notifications:"Notifications", audio:"Audio", photos:"Photos",
+            mediaplayer:"Media Player", musicplayer:"Music Player", appstore:"App Store",
+            downloader:"Downloader", archivemanager:"Archive Manager", printermanager:"Printer Manager",
+            diskmanagement:"Disk Management", storagemanager:"Storage Manager", bluetooth:"Bluetooth",
+            wifi:"Wi-Fi", users:"Users & Accounts", passwordmanager:"Password Manager",
+            privacy:"Privacy Center", firewall:"Firewall", threatcenter:"Threat Center",
+            systemsearch:"System Search", systemtools:"System Tools", calendar:"Calendar",
+            clock:"Clock & Alarms", camera:"Camera", voicerecorder:"Voice Recorder",
+            clipboard:"Clipboard", stickynotes:"Sticky Notes", maps:"Maps", mail:"Mail",
+            messaging:"Messaging", remotedesktop:"Remote Desktop", screenshot:"Screenshot",
+            updates:"System Update", packages:"Package Manager", developer:"Developer Tools",
+            startup:"Startup Apps", virtualdesktops:"Virtual Desktops", snap:"Snap Manager",
+            notificationcenter:"Notification Center", personalization:"Personalization",
+            display:"Display", sound:"Sound", games:"Game / Proton", wine:"Windows Apps",
+            about:"About WINUX11"
         }
 
-        if (command === "network" || command === "audio" || command === "notifications")
-            activeApp = command
-        else
-            activeApp = command
-
+        activeApp = command
         activeTitle = titles[command] || "WINUX11 App"
         closeShellMenus()
     }
@@ -47,7 +57,9 @@ Window {
         onDesktopClicked: root.closeShellMenus()
     }
 
-    WindowManager { id: windowManager }
+    WindowManager {
+        id: windowManager
+    }
 
     StartMenu {
         id: startMenu
@@ -66,6 +78,7 @@ Window {
     Search {
         id: search
         z: 600
+        anchors.fill: parent
         open: root.searchOpen
         onLaunch: function(command) { root.launch(command) }
     }
@@ -76,38 +89,34 @@ Window {
         startOpen: root.startOpen
         searchOpen: root.searchOpen
         quickSettingsOpen: root.quickSettingsOpen
-
         onStartClicked: {
             root.searchOpen = false
             root.quickSettingsOpen = false
             root.startOpen = !root.startOpen
         }
-
         onSearchClicked: {
             root.startOpen = false
             root.quickSettingsOpen = false
             root.searchOpen = !root.searchOpen
         }
-
         onLaunch: function(command) { root.launch(command) }
-
         onQuickSettingsOpenChanged: root.quickSettingsOpen = quickSettingsOpen
     }
 
     QuickSettings {
         id: quickSettings
         z: 1100
-        anchors.right: parent.right
-        anchors.bottom: taskbar.top
-        anchors.rightMargin: 16
-        anchors.bottomMargin: 12
-        width: Math.min(360, parent.width - 32)
-        height: Math.min(370, parent.height - 110)
+        width: Math.min(340, root.width - 48)
+        height: Math.min(370, root.height - 118)
+        x: Math.max(24, root.width - width - 28)
+        y: Math.max(24, taskbar.y - height - 14)
         open: root.quickSettingsOpen
     }
 
     AppWindow {
         id: appWindow
+        z: 900
+        anchors.fill: parent
         appId: root.activeApp
         title: root.activeTitle
         onClosed: root.activeApp = ""
@@ -115,7 +124,6 @@ Window {
     }
 
     Item {
-        id: keyboardLayer
         anchors.fill: parent
         focus: true
         Keys.onPressed: function(event) {

@@ -14,6 +14,12 @@ qt_add_executable(WINUX11Shell
     src/main.cpp
     src/services/SystemService.cpp
     src/services/SystemService.h
+    src/services/TerminalService.cpp
+    src/services/TerminalService.h
+    src/services/FileService.cpp
+    src/services/FileService.h
+    src/services/CalculatorService.cpp
+    src/services/CalculatorService.h
 )
 
 qt_add_qml_module(WINUX11Shell
@@ -21,6 +27,8 @@ qt_add_qml_module(WINUX11Shell
     VERSION 1.0
     QML_FILES
         src/Main.qml
+        src/AppWindow.qml
+        src/QuickSettings.qml
         src/ui/Theme.qml
         src/ui/GlassPanel.qml
         src/ui/IconButton.qml
@@ -32,6 +40,18 @@ qt_add_qml_module(WINUX11Shell
         src/search/Search.qml
         src/windows/WindowManager.qml
         src/shell/ShellState.qml
+        src/apps/AboutApp.qml
+        src/apps/BrowserApp.qml
+        src/apps/CalculatorApp.qml
+        src/apps/ExplorerApp.qml
+        src/apps/NetworkApp.qml
+        src/apps/NotificationsApp.qml
+        src/apps/SecurityApp.qml
+        src/apps/SettingsApp.qml
+        src/apps/TaskManagerApp.qml
+        src/apps/TerminalApp.qml
+        src/apps/TextEditorApp.qml
+        src/apps/GenericApp.qml
     RESOURCES
         assets/icons/start.svg
         assets/icons/search.svg

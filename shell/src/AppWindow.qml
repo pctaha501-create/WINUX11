@@ -13,6 +13,23 @@ Item {
     visible: appId.length > 0
     z: 900
 
+    function appSource(id) {
+        var known = {
+            terminal: "apps/TerminalApp.qml",
+            browser: "apps/BrowserApp.qml",
+            explorer: "apps/ExplorerApp.qml",
+            settings: "apps/SettingsApp.qml",
+            taskmanager: "apps/TaskManagerApp.qml",
+            editor: "apps/TextEditorApp.qml",
+            calculator: "apps/CalculatorApp.qml",
+            network: "apps/NetworkApp.qml",
+            security: "apps/SecurityApp.qml",
+            notifications: "apps/NotificationsApp.qml",
+            about: "apps/AboutApp.qml"
+        }
+        return known[id] || "apps/GenericApp.qml"
+    }
+
     Rectangle {
         anchors.fill: parent
         color: "#52000000"
@@ -43,15 +60,6 @@ Item {
                 color: Theme.textPrimary
                 font.pixelSize: 16
                 font.weight: Font.DemiBold
-            }
-
-            Text {
-                anchors.right: closeButton.left
-                anchors.rightMargin: 14
-                anchors.verticalCenter: parent.verticalCenter
-                text: root.appId
-                color: Theme.textMuted
-                font.pixelSize: 11
             }
 
             Rectangle {
@@ -112,18 +120,16 @@ Item {
             anchors.top: parent.top
             anchors.topMargin: 58
             anchors.bottom: parent.bottom
-            source:
-                root.appId === "terminal" ? "apps/TerminalApp.qml" :
-                root.appId === "browser" ? "apps/BrowserApp.qml" :
-                root.appId === "explorer" ? "apps/ExplorerApp.qml" :
-                root.appId === "settings" ? "apps/SettingsApp.qml" :
-                root.appId === "taskmanager" ? "apps/TaskManagerApp.qml" :
-                root.appId === "editor" ? "apps/TextEditorApp.qml" :
-                root.appId === "calculator" ? "apps/CalculatorApp.qml" :
-                root.appId === "network" ? "apps/NetworkApp.qml" :
-                root.appId === "security" ? "apps/SecurityApp.qml" :
-                root.appId === "notifications" ? "apps/NotificationsApp.qml" :
-                root.appId === "about" ? "apps/AboutApp.qml" : ""
+            source: root.appId.length > 0 ? root.appSource(root.appId) : ""
+
+            onLoaded: {
+                if (item) {
+                    if (item.hasOwnProperty("appTitle"))
+                        item.appTitle = root.title
+                    if (item.hasOwnProperty("appId"))
+                        item.appId = root.appId
+                }
+            }
         }
     }
 }

@@ -44,6 +44,29 @@ Item {
         }
 
         Rectangle {
+            id: maximizeButton
+            anchors.right: closeButton.left
+            anchors.rightMargin: 6
+            anchors.verticalCenter: parent.verticalCenter
+            width: 24
+            height: 24
+            radius: 12
+            color: "#25FFFFFF"
+            Text { anchors.centerIn: parent; text: frame.toplevel && frame.toplevel.maximized ? "❐" : "□"; color: "#FFFFFF"; font.pixelSize: 13 }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    if (!frame.toplevel)
+                        return
+                    if (frame.toplevel.maximized)
+                        frame.toplevel.sendUnmaximized(Qt.size(720, 480))
+                    else
+                        frame.toplevel.sendMaximized(Qt.size(1280, 662))
+                }
+            }
+        }
+
+        Rectangle {
             id: closeButton
             anchors.right: parent.right
             anchors.rightMargin: 8
@@ -68,6 +91,15 @@ Item {
                     if (frame.toplevel)
                         frame.toplevel.sendClose()
                 }
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            acceptedButtons: Qt.LeftButton
+            onPressed: {
+                if (frame.toplevel)
+                    frame.toplevel.sendConfigure(Qt.size(frame.width, frame.height - titleBar.height), [XdgToplevel.ActivatedState])
             }
         }
 

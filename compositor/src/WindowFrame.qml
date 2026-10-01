@@ -95,7 +95,10 @@ Item {
         }
 
         MouseArea {
-            anchors.fill: parent
+            anchors.left: parent.left
+            anchors.right: maximizeButton.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
             acceptedButtons: Qt.LeftButton
             onPressed: {
                 if (frame.toplevel)

@@ -6,10 +6,9 @@ Window {
     id: root
     width: 1280
     height: 720
-    minimumWidth: 960
-    minimumHeight: 600
     visible: true
-    visibility: Window.Maximized
+    visibility: Window.FullScreen
+    flags: Qt.Window | Qt.FramelessWindowHint
     color: Theme.backgroundDeep
     title: "WINUX11"
 
@@ -21,11 +20,19 @@ Window {
 
     function launch(command) {
         var titles = {
-            explorer:"File Explorer", browser:"WINUX11 Browser", terminal:"Terminal",
-            settings:"Settings", taskmanager:"Task Manager", editor:"Text Editor",
-            calculator:"Calculator", network:"Network", security:"Security",
-            notifications:"Notifications", about:"About WINUX11"
+            explorer: "File Explorer",
+            browser: "WINUX11 Browser",
+            terminal: "WINUX11 Terminal",
+            settings: "Settings",
+            taskmanager: "Task Manager",
+            editor: "Text Editor",
+            calculator: "Calculator",
+            network: "Network",
+            security: "Security Center",
+            notifications: "Notification Center",
+            about: "About WINUX11"
         }
+
         activeApp = command
         activeTitle = titles[command] || "WINUX11"
         startOpen = false
@@ -35,61 +42,81 @@ Window {
 
     Desktop {
         anchors.fill: parent
+        z: 0
         onDesktopClicked: {
             root.startOpen = false
             root.searchOpen = false
             root.quickSettingsOpen = false
         }
+        onLaunch: command => root.launch(command)
     }
 
     Row {
         anchors.left: parent.left
         anchors.top: parent.top
-        anchors.leftMargin: 34
-        anchors.topMargin: 88
+        anchors.leftMargin: 28
+        anchors.topMargin: 24
         spacing: 12
+        z: 50
 
         Rectangle {
-            width: 190; height: 112; radius: 22
-            color: "#0DFFFFFF"; border.width: 1; border.color: "#18FFFFFF"
-            Column {
-                anchors.fill: parent; anchors.margins: 16; spacing: 5
-                Text { text: "Today"; color: Theme.textMuted; font.pixelSize: 10 }
-                Text { text: Qt.formatDate(new Date(), "dddd"); color: Theme.textPrimary; font.pixelSize: 18; font.weight: Font.DemiBold }
-                Text { text: Qt.formatDate(new Date(), "dd MMMM yyyy"); color: Theme.textSecondary; font.pixelSize: 10 }
+            width: 42
+            height: 42
+            radius: 13
+            color: "#286EA8FF"
+            border.width: 1
+            border.color: "#55FFFFFF"
+
+            Image {
+                anchors.centerIn: parent
+                width: 25
+                height: 25
+                source: "qrc:/qt/qml/WINUX11/assets/icons/start.svg"
             }
         }
 
-        Rectangle {
-            width: 190; height: 112; radius: 22
-            color: "#0DFFFFFF"; border.width: 1; border.color: "#18FFFFFF"
-            Column {
-                anchors.fill: parent; anchors.margins: 16; spacing: 5
-                Text { text: "System"; color: Theme.textMuted; font.pixelSize: 10 }
-                Text { text: "WINUX11"; color: Theme.textPrimary; font.pixelSize: 18; font.weight: Font.DemiBold }
-                Text { text: "All services operational"; color: Theme.success; font.pixelSize: 10 }
+        Column {
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: 1
+
+            Text {
+                text: "WINUX11"
+                color: "#FFFFFFFF"
+                font.pixelSize: 16
+                font.weight: Font.DemiBold
+            }
+
+            Text {
+                text: "Windows-style Linux desktop"
+                color: "#B4C0D0"
+                font.pixelSize: 10
             }
         }
     }
 
     StartMenu {
         id: startMenu
-        width: Math.min(parent.width - 120, 720)
-        height: 590
-        anchors.horizontalCenter: parent.horizontalCenter
+        width: Math.min(root.width - 56, 760)
+        height: Math.min(root.height - 145, 620)
+        anchors.left: parent.left
         anchors.bottom: taskbar.top
+        anchors.leftMargin: 28
         anchors.bottomMargin: 8
         z: 700
         open: root.startOpen
-        onSearchRequested: { root.startOpen = false; root.searchOpen = true }
-        onLaunch: function(command) { root.launch(command) }
+        onSearchRequested: {
+            root.startOpen = false
+            root.searchOpen = true
+        }
+        onLaunch: command => root.launch(command)
     }
 
     Search {
         id: search
+        anchors.fill: parent
         z: 800
         open: root.searchOpen
-        onLaunch: function(command) { root.launch(command) }
+        onLaunch: command => root.launch(command)
     }
 
     Taskbar {
@@ -99,31 +126,32 @@ Window {
         searchOpen: root.searchOpen
         quickSettingsOpen: root.quickSettingsOpen
         onStartClicked: {
-            root.searchOpen = false
             root.startOpen = !root.startOpen
+            root.searchOpen = false
         }
         onSearchClicked: {
-            root.startOpen = false
             root.searchOpen = !root.searchOpen
+            root.startOpen = false
         }
-        onLaunch: function(command) { root.launch(command) }
+        onLaunch: command => root.launch(command)
         onQuickSettingsOpenChanged: root.quickSettingsOpen = taskbar.quickSettingsOpen
     }
 
     QuickSettings {
         id: quickSettings
         z: 1100
-        width: 360
-        height: 430
-        x: root.width - width - 30
-        y: Math.max(24, taskbar.y - height - 8)
+        width: 380
+        height: 470
+        anchors.right: parent.right
+        anchors.bottom: taskbar.top
+        anchors.rightMargin: 22
+        anchors.bottomMargin: 8
         open: root.quickSettingsOpen
     }
 
     AppWindow {
         id: appWindow
-        anchors.fill: parent
-        z: 900
+        z: 1200
         appId: root.activeApp
         title: root.activeTitle
         onClosed: root.activeApp = ""

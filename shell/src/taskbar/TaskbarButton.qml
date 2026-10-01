@@ -5,65 +5,63 @@ Item {
     id: root
     property string glyph: "•"
     property string label: ""
+    property string iconSource: ""
     property bool active: false
     signal clicked()
 
-    width: 44
-    height: 44
+    width: label.length > 0 ? 48 : 48
+    height: 48
 
     Rectangle {
         anchors.fill: parent
         radius: 14
-        color: root.active ? "#286EA8FF" : (mouse.containsMouse ? "#18FFFFFF" : "transparent")
+        color: root.active ? "#3D5B8AFF" : (mouse.containsMouse ? "#263B5066" : "transparent")
         border.width: root.active ? 1 : 0
-        border.color: "#55A9C9FF"
-        scale: mouse.pressed ? 0.94 : (mouse.containsMouse ? 1.04 : 1.0)
+        border.color: "#66FFFFFF"
 
         Behavior on color { ColorAnimation { duration: 120 } }
-        Behavior on scale { NumberAnimation { duration: 120; easing.type: Easing.OutCubic } }
+
+        Image {
+            anchors.centerIn: parent
+            width: 25
+            height: 25
+            source: root.iconSource
+            fillMode: Image.PreserveAspectFit
+            visible: root.iconSource.length > 0
+            smooth: true
+        }
 
         Text {
             anchors.centerIn: parent
             text: root.glyph
-            color: Theme.textPrimary
-            font.pixelSize: 20
+            color: "#FFFFFFFF"
+            font.pixelSize: 21
             font.weight: Font.Medium
+            visible: root.iconSource.length === 0
         }
 
         Rectangle {
             visible: root.active
-            width: 5; height: 5; radius: 2.5
+            width: 6
+            height: 3
+            radius: 2
             anchors.bottom: parent.bottom
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottomMargin: 4
+            anchors.bottomMargin: 3
             color: Theme.accent
-        }
-
-        MouseArea {
-            id: mouse
-            anchors.fill: parent
-            hoverEnabled: true
-            onClicked: root.clicked()
         }
     }
 
-    Rectangle {
-        visible: mouse.containsMouse && root.label.length > 0
-        x: (parent.width - width) / 2
-        y: -34
-        width: Math.max(70, tooltipText.implicitWidth + 18)
-        height: 26
-        radius: 9
-        color: "#F20A0F18"
-        border.width: 1
-        border.color: "#30FFFFFF"
+    MouseArea {
+        id: mouse
+        anchors.fill: parent
+        hoverEnabled: true
+        onClicked: root.clicked()
+    }
 
-        Text {
-            id: tooltipText
-            anchors.centerIn: parent
-            text: root.label
-            color: Theme.textPrimary
-            font.pixelSize: 9
-        }
+    ToolTip {
+        id: tip
+        visible: mouse.containsMouse && root.label.length > 0
+        text: root.label
     }
 }

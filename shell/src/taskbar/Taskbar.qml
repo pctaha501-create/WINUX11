@@ -3,10 +3,11 @@ import WINUX11 1.0
 
 Item {
     id: root
+
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.bottom: parent.bottom
-    height: 84
+    height: 76
 
     property bool startOpen: false
     property bool searchOpen: false
@@ -17,81 +18,118 @@ Item {
 
     GlassPanel {
         id: dock
-        width: Math.min(parent.width - 56, 980)
-        height: 64
+        width: Math.min(parent.width - 32, 1080)
+        height: 62
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 12
-        radius: 22
-        glassColor: "#E80A0F18"
-        borderColor: "#38FFFFFF"
+        anchors.bottomMargin: 8
+        radius: 20
+        glassColor: "#EE111A25"
+        borderColor: "#55FFFFFF"
 
         Row {
             anchors.fill: parent
-            anchors.margins: 8
-            spacing: 4
+            anchors.margins: 7
+            spacing: 5
 
-            TaskbarButton { glyph: "⊞"; label: "Start"; active: root.startOpen; onClicked: root.startClicked() }
-            TaskbarButton { glyph: "⌕"; label: "Search"; active: root.searchOpen; onClicked: root.searchClicked() }
-
-            Rectangle {
-                width: 1; height: 30
-                anchors.verticalCenter: parent.verticalCenter
-                color: "#24FFFFFF"
+            TaskbarButton {
+                glyph: "⊞"
+                label: "Start"
+                iconSource: "qrc:/qt/qml/WINUX11/assets/icons/start.svg"
+                active: root.startOpen
+                onClicked: root.startClicked()
             }
 
-            Row {
-                width: 300
+            TaskbarButton {
+                glyph: "⌕"
+                label: "Search"
+                iconSource: "qrc:/qt/qml/WINUX11/assets/icons/search.svg"
+                active: root.searchOpen
+                onClicked: root.searchClicked()
+            }
+
+            Rectangle {
+                width: 1
+                height: 34
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: 3
-                TaskbarButton { glyph: "▣"; label: "File Explorer"; onClicked: root.launch("explorer") }
-                TaskbarButton { glyph: "◉"; label: "Browser"; onClicked: root.launch("browser") }
-                TaskbarButton { glyph: ">_"; label: "Terminal"; onClicked: root.launch("terminal") }
-                TaskbarButton { glyph: "⚙"; label: "Settings"; onClicked: root.launch("settings") }
-                TaskbarButton { glyph: "▤"; label: "Task Manager"; onClicked: root.launch("taskmanager") }
+                color: "#36FFFFFF"
+            }
+
+            TaskbarButton {
+                label: "File Explorer"
+                iconSource: "qrc:/qt/qml/WINUX11/assets/icons/explorer.svg"
+                onClicked: root.launch("explorer")
+            }
+
+            TaskbarButton {
+                label: "Browser"
+                iconSource: "qrc:/qt/qml/WINUX11/assets/icons/browser.svg"
+                onClicked: root.launch("browser")
+            }
+
+            TaskbarButton {
+                glyph: ">_"
+                label: "Terminal"
+                iconSource: "qrc:/qt/qml/WINUX11/assets/icons/terminal.svg"
+                onClicked: root.launch("terminal")
+            }
+
+            TaskbarButton {
+                label: "Settings"
+                iconSource: "qrc:/qt/qml/WINUX11/assets/icons/settings.svg"
+                onClicked: root.launch("settings")
             }
 
             Item {
-                width: Math.max(0, dock.width - 8 - 44 - 44 - 1 - 300 - 1 - 44 - 44 - 44 - 84 - 28)
+                width: Math.max(8, parent.width - 7 * 5 - 4 * 48 - 5 * 48 - 3 - 120)
                 height: 1
             }
 
-            Rectangle {
-                width: 1; height: 30
-                anchors.verticalCenter: parent.verticalCenter
-                color: "#24FFFFFF"
+            TaskbarButton {
+                label: "Network"
+                iconSource: "qrc:/qt/qml/WINUX11/assets/icons/network.svg"
+                active: root.quickSettingsOpen
+                onClicked: root.quickSettingsOpen = !root.quickSettingsOpen
             }
 
-            TaskbarButton { glyph: "⌁"; label: "Network"; active: root.quickSettingsOpen; onClicked: root.quickSettingsOpen = !root.quickSettingsOpen }
-            TaskbarButton { glyph: "◖"; label: "Volume"; active: root.quickSettingsOpen; onClicked: root.quickSettingsOpen = !root.quickSettingsOpen }
-            TaskbarButton { glyph: "◐"; label: "Control Center"; active: root.quickSettingsOpen; onClicked: root.quickSettingsOpen = !root.quickSettingsOpen }
+            TaskbarButton {
+                label: "Volume"
+                iconSource: "qrc:/qt/qml/WINUX11/assets/icons/volume.svg"
+                active: root.quickSettingsOpen
+                onClicked: root.quickSettingsOpen = !root.quickSettingsOpen
+            }
 
-            Column {
+            Item {
                 width: 74
-                anchors.verticalCenter: parent.verticalCenter
-                spacing: 1
+                height: parent.height
 
-                Text {
-                    id: clockText
-                    width: parent.width
-                    text: Qt.formatTime(new Date(), "HH:mm")
-                    color: Theme.textPrimary
-                    font.pixelSize: 13
-                    font.weight: Font.DemiBold
-                    horizontalAlignment: Text.AlignHCenter
-                }
-                Text {
-                    width: parent.width
-                    text: Qt.formatDate(new Date(), "dd MMM")
-                    color: Theme.textMuted
-                    font.pixelSize: 9
-                    horizontalAlignment: Text.AlignHCenter
-                }
-                Timer {
-                    interval: 1000
-                    repeat: true
-                    running: true
-                    onTriggered: clockText.text = Qt.formatTime(new Date(), "HH:mm")
+                Column {
+                    anchors.centerIn: parent
+                    spacing: 1
+
+                    Text {
+                        width: 74
+                        text: Qt.formatTime(new Date(), "HH:mm")
+                        color: "#FFFFFFFF"
+                        font.pixelSize: 12
+                        font.weight: Font.DemiBold
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    Text {
+                        width: 74
+                        text: Qt.formatDate(new Date(), "dd/MM")
+                        color: Theme.textMuted
+                        font.pixelSize: 9
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+
+                    Timer {
+                        interval: 1000
+                        repeat: true
+                        running: true
+                        onTriggered: parent.parent.children[0].text = Qt.formatTime(new Date(), "HH:mm")
+                    }
                 }
             }
         }

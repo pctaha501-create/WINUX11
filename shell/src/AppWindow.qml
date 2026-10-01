@@ -31,32 +31,41 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: "#44000000"
+        color: "#AA000000"
+        visible: root.visible
     }
 
     GlassPanel {
         id: frame
-        width: Math.min(parent.width - 90, 1180)
-        height: Math.min(parent.height - 155, 690)
+        width: Math.min(parent.width - 90, 1240)
+        height: Math.min(parent.height - 145, 760)
         anchors.centerIn: parent
-        radius: 26
-        glassColor: "#F20B1018"
-        borderColor: "#48FFFFFF"
+        radius: 20
+        glassColor: "#F51A2533"
+        borderColor: "#70FFFFFF"
 
         Rectangle {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
-            height: 60
-            radius: 26
-            color: "#10000000"
+            height: 54
+            radius: 20
+            color: "#F51A2533"
+
+            Rectangle {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                height: 1
+                color: "#35FFFFFF"
+            }
 
             Text {
-                x: 22
+                x: 20
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.title
-                color: Theme.textPrimary
-                font.pixelSize: 15
+                color: "#FFFFFFFF"
+                font.pixelSize: 14
                 font.weight: Font.DemiBold
             }
 
@@ -64,19 +73,23 @@ Item {
                 anchors.right: parent.right
                 anchors.rightMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: 5
+                spacing: 7
 
                 Rectangle {
-                    width: 34; height: 34; radius: 11
-                    color: minMouse.containsMouse ? "#20FFFFFF" : "transparent"
-                    Text { anchors.centerIn: parent; text: "—"; color: Theme.textPrimary; font.pixelSize: 18 }
+                    width: 32
+                    height: 32
+                    radius: 10
+                    color: minMouse.containsMouse ? "#33465D78" : "transparent"
+                    Text { anchors.centerIn: parent; text: "—"; color: "#FFFFFFFF"; font.pixelSize: 18 }
                     MouseArea { id: minMouse; anchors.fill: parent; hoverEnabled: true; onClicked: root.minimized() }
                 }
 
                 Rectangle {
-                    width: 34; height: 34; radius: 11
-                    color: closeMouse.containsMouse ? "#40F16C78" : "transparent"
-                    Text { anchors.centerIn: parent; text: "×"; color: Theme.textPrimary; font.pixelSize: 21 }
+                    width: 32
+                    height: 32
+                    radius: 10
+                    color: closeMouse.containsMouse ? "#C93D5263" : "transparent"
+                    Text { anchors.centerIn: parent; text: "×"; color: "#FFFFFFFF"; font.pixelSize: 21 }
                     MouseArea { id: closeMouse; anchors.fill: parent; hoverEnabled: true; onClicked: root.closed() }
                 }
             }
@@ -87,7 +100,8 @@ Item {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            anchors.topMargin: 60
+            anchors.topMargin: 54
+            anchors.margins: 1
             source: root.appId.length > 0 ? root.appSource(root.appId) : ""
             onStatusChanged: if (status === Loader.Error) console.log("WINUX11 app load failed:", source)
         }

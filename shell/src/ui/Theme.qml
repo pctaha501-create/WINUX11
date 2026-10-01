@@ -1,24 +1,25 @@
 import QtQuick
 
 QtObject {
-    readonly property color background: "#06080D"
-    readonly property color backgroundDeep: "#03050A"
-    readonly property color surface: "#0D1119"
-    readonly property color surfaceRaised: "#121925"
-    readonly property color glass: "#D90E141D"
-    readonly property color glassStrong: "#F0121823"
-    readonly property color glassSoft: "#80151C28"
-    readonly property color border: "#2AFFFFFF"
-    readonly property color borderStrong: "#42FFFFFF"
-    readonly property color textPrimary: "#F7F9FC"
-    readonly property color textSecondary: "#AEB8C8"
-    readonly property color textMuted: "#6F7A8C"
-    readonly property color accent: "#6EA8FF"
-    readonly property color accentSoft: "#286EA8FF"
-    readonly property color success: "#52D69B"
-    readonly property color warning: "#F2C66D"
-    readonly property color danger: "#F16C78"
-    readonly property int radiusSmall: 12
-    readonly property int radiusMedium: 18
-    readonly property int radiusLarge: 26
+    readonly property color background: "#071019"
+    readonly property color backgroundDeep: "#03070C"
+    readonly property color surface: "#E61A2430"
+    readonly property color surfaceRaised: "#F0243040"
+    readonly property color glass: "#E61A2430"
+    readonly property color glassStrong: "#F0283444"
+    readonly property color glassSoft: "#B0182532"
+    readonly property color border: "#55FFFFFF"
+    readonly property color borderStrong: "#78FFFFFF"
+    readonly property color textPrimary: "#FFFFFFFF"
+    readonly property color textSecondary: "#E1E8F2"
+    readonly property color textMuted: "#B4C0D0"
+    readonly property color accent: "#5B9CFF"
+    readonly property color accentSoft: "#356EA8FF"
+    readonly property color success: "#55D69B"
+    readonly property color warning: "#FFC45B"
+    readonly property color danger: "#FF6B7A"
+
+    readonly property int radiusSmall: 10
+    readonly property int radiusMedium: 16
+    readonly property int radiusLarge: 22
 }

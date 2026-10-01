@@ -3,49 +3,74 @@
 #include <QQmlContext>
 #include <QDir>
 #include <QProcess>
-#include <QObject>
+#include <QStandardPaths>
+#include <QUrl>
 
 #include "services/SystemService.h"
+#include "services/TerminalService.h"
+#include "services/FileService.h"
+#include "services/CalculatorService.h"
 
 class Launcher final : public QObject
 {
     Q_OBJECT
-
 public:
     explicit Launcher(QObject *parent = nullptr) : QObject(parent) {}
 
     Q_INVOKABLE void openTerminal()
     {
-        QProcess::startDetached(QStringLiteral("x-terminal-emulator"));
+        QProcess::startDetached("x-terminal-emulator");
     }
 
     Q_INVOKABLE void openExplorer()
     {
-        QProcess::startDetached(QStringLiteral("xdg-open"), {QDir::homePath()});
+        QProcess::startDetached("xdg-open", {QDir::homePath()});
     }
 
     Q_INVOKABLE void openBrowser()
     {
-        QProcess::startDetached(QStringLiteral("xdg-open"),
-                                {QStringLiteral("https://www.google.com")});
+        openBrowserUrl("https://www.google.com");
+    }
+
+    Q_INVOKABLE void openBrowserUrl(QString url)
+    {
+        if (!url.startsWith("http://") && !url.startsWith("https://"))
+            url = "https://" + url;
+
+        const QStringList candidates = {"chromium", "chromium-browser", "google-chrome", "google-chrome-stable"};
+        for (const QString &browser : candidates) {
+            if (QStandardPaths::findExecutable(browser).isEmpty())
+                continue;
+
+            if (QProcess::startDetached(browser, {"--app=" + url, "--new-window"}))
+                return;
+        }
+
+        QProcess::startDetached("xdg-open", {QUrl(url).toString()});
     }
 };
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
-    app.setApplicationName(QStringLiteral("WINUX11"));
-    app.setApplicationDisplayName(QStringLiteral("WINUX11"));
-    app.setOrganizationName(QStringLiteral("WINUX11"));
+    app.setApplicationName("WINUX11");
+    app.setApplicationDisplayName("WINUX11");
+    app.setOrganizationName("WINUX11");
 
     Launcher launcher;
     SystemService systemService;
+    TerminalService terminalService;
+    FileService fileService;
+    CalculatorService calculatorService;
 
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty(QStringLiteral("launcher"), &launcher);
-    engine.rootContext()->setContextProperty(QStringLiteral("systemService"), &systemService);
-    engine.loadFromModule(QStringLiteral("WINUX11"), QStringLiteral("Main"));
+    engine.rootContext()->setContextProperty("launcher", &launcher);
+    engine.rootContext()->setContextProperty("systemService", &systemService);
+    engine.rootContext()->setContextProperty("terminalService", &terminalService);
+    engine.rootContext()->setContextProperty("fileService", &fileService);
+    engine.rootContext()->setContextProperty("calculatorService", &calculatorService);
 
+    engine.loadFromModule("WINUX11", "Main");
     if (engine.rootObjects().isEmpty())
         return 1;
 

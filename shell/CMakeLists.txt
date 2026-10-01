@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(WINUX11Shell VERSION 0.5 LANGUAGES CXX)
+project(WINUX11Shell VERSION 0.6 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,6 +14,12 @@ qt_add_executable(WINUX11Shell
     src/main.cpp
     src/services/SystemService.cpp
     src/services/SystemService.h
+    src/services/TerminalService.cpp
+    src/services/TerminalService.h
+    src/services/FileService.cpp
+    src/services/FileService.h
+    src/services/CalculatorService.cpp
+    src/services/CalculatorService.h
 )
 
 qt_add_qml_module(WINUX11Shell
@@ -21,6 +27,7 @@ qt_add_qml_module(WINUX11Shell
     VERSION 1.0
     QML_FILES
         src/Main.qml
+        src/AppWindow.qml
         src/QuickSettings.qml
         src/ui/Theme.qml
         src/ui/GlassPanel.qml
@@ -33,6 +40,17 @@ qt_add_qml_module(WINUX11Shell
         src/search/Search.qml
         src/windows/WindowManager.qml
         src/shell/ShellState.qml
+        src/apps/TerminalApp.qml
+        src/apps/BrowserApp.qml
+        src/apps/ExplorerApp.qml
+        src/apps/SettingsApp.qml
+        src/apps/TaskManagerApp.qml
+        src/apps/TextEditorApp.qml
+        src/apps/CalculatorApp.qml
+        src/apps/NetworkApp.qml
+        src/apps/SecurityApp.qml
+        src/apps/NotificationsApp.qml
+        src/apps/AboutApp.qml
     RESOURCES
         assets/icons/start.svg
         assets/icons/search.svg

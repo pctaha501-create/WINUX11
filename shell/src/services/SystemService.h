@@ -23,6 +23,7 @@ public:
     Q_INVOKABLE void toggleFocus(bool enabled);
     Q_INVOKABLE void openSettings();
     Q_INVOKABLE void refresh();
+    Q_INVOKABLE QString processSnapshot() const;
 
 signals:
     void volumeChanged();

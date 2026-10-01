@@ -16,6 +16,8 @@ Window {
     property bool startOpen: false
     property bool searchOpen: false
     property bool quickSettingsOpen: false
+    property string activeApp: ""
+    property string activeTitle: ""
 
     function closeShellMenus() {
         startOpen = false
@@ -24,13 +26,19 @@ Window {
     }
 
     function launch(command) {
-        if (command === "terminal")
-            launcher.openTerminal()
-        else if (command === "explorer")
-            launcher.openExplorer()
-        else if (command === "browser")
-            launcher.openBrowser()
+        const titles = {
+            terminal:"Terminal", explorer:"File Explorer", browser:"WINUX Browser",
+            settings:"Settings", taskmanager:"Task Manager", editor:"Text Editor",
+            calculator:"Calculator", network:"Network", security:"Security",
+            notifications:"Notifications", about:"About WINUX11", audio:"Audio"
+        }
 
+        if (command === "network" || command === "audio" || command === "notifications")
+            activeApp = command
+        else
+            activeApp = command
+
+        activeTitle = titles[command] || "WINUX11 App"
         closeShellMenus()
     }
 
@@ -39,9 +47,7 @@ Window {
         onDesktopClicked: root.closeShellMenus()
     }
 
-    WindowManager {
-        id: windowManager
-    }
+    WindowManager { id: windowManager }
 
     StartMenu {
         id: startMenu
@@ -54,18 +60,14 @@ Window {
             root.startOpen = false
             root.searchOpen = true
         }
-        onLaunch: function(command) {
-            root.launch(command)
-        }
+        onLaunch: function(command) { root.launch(command) }
     }
 
     Search {
         id: search
         z: 600
         open: root.searchOpen
-        onLaunch: function(command) {
-            root.launch(command)
-        }
+        onLaunch: function(command) { root.launch(command) }
     }
 
     Taskbar {
@@ -87,31 +89,40 @@ Window {
             root.searchOpen = !root.searchOpen
         }
 
-        onLaunch: function(command) {
-            root.launch(command)
-        }
+        onLaunch: function(command) { root.launch(command) }
 
-        onQuickSettingsOpenChanged:
-            root.quickSettingsOpen = taskbar.quickSettingsOpen
+        onQuickSettingsOpenChanged: root.quickSettingsOpen = quickSettingsOpen
     }
 
     QuickSettings {
         id: quickSettings
+        z: 1100
         anchors.right: parent.right
-        anchors.bottom: parent.bottom
+        anchors.bottom: taskbar.top
         anchors.rightMargin: 16
-        anchors.bottomMargin: 82
+        anchors.bottomMargin: 12
+        width: Math.min(360, parent.width - 32)
+        height: Math.min(370, parent.height - 110)
         open: root.quickSettingsOpen
+    }
+
+    AppWindow {
+        id: appWindow
+        appId: root.activeApp
+        title: root.activeTitle
+        onClosed: root.activeApp = ""
+        onMinimized: root.activeApp = ""
     }
 
     Item {
         id: keyboardLayer
         anchors.fill: parent
         focus: true
-
         Keys.onPressed: function(event) {
             if (event.key === Qt.Key_Escape) {
                 root.closeShellMenus()
+                if (root.activeApp.length > 0)
+                    root.activeApp = ""
                 event.accepted = true
             } else if ((event.modifiers & Qt.MetaModifier) && event.key === Qt.Key_E) {
                 root.launch("explorer")
@@ -120,8 +131,6 @@ Window {
                 root.launch("terminal")
                 event.accepted = true
             } else if (event.key === Qt.Key_Meta) {
-                root.searchOpen = false
-                root.quickSettingsOpen = false
                 root.startOpen = !root.startOpen
                 event.accepted = true
             }

@@ -9,9 +9,9 @@ Window {
     minimumWidth: 980
     minimumHeight: 600
     visible: true
+    visibility: Window.Maximized
     color: Theme.backgroundDeep
     title: "WINUX11"
-    visibility: Window.Maximized
 
     property bool startOpen: false
     property bool searchOpen: false
@@ -19,7 +19,7 @@ Window {
     property string activeApp: ""
     property string activeTitle: ""
 
-    function closeShellMenus() {
+    function closePanels() {
         startOpen = false
         searchOpen = false
         quickSettingsOpen = false
@@ -46,27 +46,38 @@ Window {
             display:"Display", sound:"Sound", games:"Game / Proton", wine:"Windows Apps",
             about:"About WINUX11"
         }
-
         activeApp = command
-        activeTitle = titles[command] || "WINUX11 App"
-        closeShellMenus()
+        activeTitle = titles[command] || "WINUX11"
+        closePanels()
+    }
+
+    Rectangle {
+        anchors.fill: parent
+        color: Theme.backgroundDeep
+
+        Rectangle {
+            anchors.fill: parent
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#101A2A" }
+                GradientStop { position: 0.52; color: "#060A11" }
+                GradientStop { position: 1.0; color: "#020408" }
+            }
+        }
     }
 
     Desktop {
         anchors.fill: parent
-        onDesktopClicked: root.closeShellMenus()
+        onDesktopClicked: root.closePanels()
     }
 
-    WindowManager {
-        id: windowManager
-    }
+    WindowManager { id: windowManager }
 
     StartMenu {
         id: startMenu
         z: 500
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: taskbar.top
-        anchors.bottomMargin: 14
+        anchors.bottomMargin: 8
         open: root.startOpen
         onSearchRequested: {
             root.startOpen = false
@@ -89,34 +100,36 @@ Window {
         startOpen: root.startOpen
         searchOpen: root.searchOpen
         quickSettingsOpen: root.quickSettingsOpen
+
         onStartClicked: {
             root.searchOpen = false
             root.quickSettingsOpen = false
             root.startOpen = !root.startOpen
         }
+
         onSearchClicked: {
             root.startOpen = false
             root.quickSettingsOpen = false
             root.searchOpen = !root.searchOpen
         }
+
         onLaunch: function(command) { root.launch(command) }
-        onQuickSettingsOpenChanged: root.quickSettingsOpen = quickSettingsOpen
     }
 
     QuickSettings {
         id: quickSettings
         z: 1100
-        width: Math.min(340, root.width - 48)
-        height: Math.min(370, root.height - 118)
-        x: Math.max(24, root.width - width - 28)
-        y: Math.max(24, taskbar.y - height - 14)
+        width: Math.min(360, root.width - 56)
+        height: Math.min(410, root.height - 122)
+        x: root.width - width - 30
+        y: Math.max(24, taskbar.y - height - 10)
         open: root.quickSettingsOpen
     }
 
     AppWindow {
         id: appWindow
-        z: 900
         anchors.fill: parent
+        z: 900
         appId: root.activeApp
         title: root.activeTitle
         onClosed: root.activeApp = ""
@@ -128,9 +141,8 @@ Window {
         focus: true
         Keys.onPressed: function(event) {
             if (event.key === Qt.Key_Escape) {
-                root.closeShellMenus()
-                if (root.activeApp.length > 0)
-                    root.activeApp = ""
+                if (root.activeApp.length > 0) root.activeApp = ""
+                root.closePanels()
                 event.accepted = true
             } else if ((event.modifiers & Qt.MetaModifier) && event.key === Qt.Key_E) {
                 root.launch("explorer")

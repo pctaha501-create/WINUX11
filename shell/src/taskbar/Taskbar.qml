@@ -3,67 +3,108 @@ import WINUX11 1.0
 
 Item {
     id: root
-    anchors.left:parent.left
-    anchors.right:parent.right
-    anchors.bottom:parent.bottom
-    height:70
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    height: 76
 
-    property bool startOpen:false
-    property bool searchOpen:false
-    property bool quickSettingsOpen:false
+    property bool startOpen: false
+    property bool searchOpen: false
+    property bool quickSettingsOpen: false
 
     signal startClicked()
     signal searchClicked()
     signal launch(string command)
 
     GlassPanel {
-        anchors.horizontalCenter:parent.horizontalCenter
-        anchors.bottom:parent.bottom
-        anchors.bottomMargin:10
-        width:Math.min(parent.width - 24, 1440)
-        height:54
-        radius:18
-        glassColor:"#E50A0E15"
-        borderColor:"#55FFFFFF"
-        borderWidth:1
+        id: bar
+        width: Math.min(parent.width - 48, 1120)
+        height: 58
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
+        radius: 20
+        glassColor: "#D90A0F18"
+        borderColor: "#42FFFFFF"
+        borderWidth: 1
 
-        SystemTray {
-            id:systemTray
-            anchors.right:parent.right
-            anchors.rightMargin:12
-            anchors.verticalCenter:parent.verticalCenter
-            width:245
-            height:44
-            panelOpen:root.quickSettingsOpen
-            onPanelToggled:root.quickSettingsOpen=!root.quickSettingsOpen
+        Row {
+            id: left
+            anchors.left: parent.left
+            anchors.leftMargin: 12
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: 5
+
+            TaskbarButton {
+                width: 42; height: 42
+                iconSource: "../assets/icons/start.svg"
+                label: "Start"
+                active: root.startOpen
+                onClicked: root.startClicked()
+            }
+
+            TaskbarButton {
+                width: 42; height: 42
+                iconSource: "../assets/icons/search.svg"
+                label: "Search"
+                active: root.searchOpen
+                onClicked: root.searchClicked()
+            }
         }
 
         Row {
-            anchors.horizontalCenter:parent.horizontalCenter
-            anchors.verticalCenter:parent.verticalCenter
-            spacing:6
+            id: apps
+            anchors.centerIn: parent
+            spacing: 4
 
             TaskbarButton {
-                width:44; height:44
-                iconSource:"../../assets/icons/start.svg"
-                label:"Start"
-                active:root.startOpen
-                onClicked:root.startClicked()
+                width: 42; height: 42
+                iconSource: "../assets/icons/explorer.svg"
+                label: "Explorer"
+                onClicked: root.launch("explorer")
             }
 
             TaskbarButton {
-                width:44; height:44
-                iconSource:"../../assets/icons/search.svg"
-                label:"Search"
-                active:root.searchOpen
-                onClicked:root.searchClicked()
+                width: 42; height: 42
+                iconSource: "../assets/icons/browser.svg"
+                label: "Browser"
+                onClicked: root.launch("browser")
             }
 
-            Rectangle { width:1; height:28; anchors.verticalCenter:parent.verticalCenter; color:"#35FFFFFF" }
+            TaskbarButton {
+                width: 42; height: 42
+                iconSource: "../assets/icons/terminal.svg"
+                label: "Terminal"
+                onClicked: root.launch("terminal")
+            }
 
-            TaskbarButton { width:44; height:44; iconSource:"../../assets/icons/explorer.svg"; label:"Explorer"; onClicked:root.launch("explorer") }
-            TaskbarButton { width:44; height:44; iconSource:"../../assets/icons/browser.svg"; label:"Browser"; onClicked:root.launch("browser") }
-            TaskbarButton { width:44; height:44; iconSource:"../../assets/icons/terminal.svg"; label:"Terminal"; onClicked:root.launch("terminal") }
+            TaskbarButton {
+                width: 42; height: 42
+                iconSource: "../assets/icons/settings.svg"
+                label: "Settings"
+                onClicked: root.launch("settings")
+            }
+        }
+
+        Rectangle {
+            id: divider
+            width: 1
+            height: 30
+            anchors.right: tray.left
+            anchors.rightMargin: 10
+            anchors.verticalCenter: parent.verticalCenter
+            color: "#35FFFFFF"
+        }
+
+        SystemTray {
+            id: tray
+            width: 285
+            height: 46
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            anchors.verticalCenter: parent.verticalCenter
+            panelOpen: root.quickSettingsOpen
+            onPanelToggled: root.quickSettingsOpen = !root.quickSettingsOpen
         }
     }
 }

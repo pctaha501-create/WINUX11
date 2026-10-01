@@ -3,8 +3,7 @@ import WINUX11 1.0
 
 Item {
     id: root
-
-    property string title: "WINUX11 App"
+    property string title: "WINUX11"
     property string appId: ""
     signal closed()
     signal minimized()
@@ -14,101 +13,86 @@ Item {
     z: 900
 
     function appSource(id) {
-        var known = {
-            terminal: "apps/TerminalApp.qml",
-            browser: "apps/BrowserApp.qml",
-            explorer: "apps/ExplorerApp.qml",
-            settings: "apps/SettingsApp.qml",
-            taskmanager: "apps/TaskManagerApp.qml",
-            editor: "apps/TextEditorApp.qml",
-            calculator: "apps/CalculatorApp.qml",
-            network: "apps/NetworkApp.qml",
-            security: "apps/SecurityApp.qml",
-            notifications: "apps/NotificationsApp.qml",
-            about: "apps/AboutApp.qml"
+        var sources = {
+            terminal: "qrc:/qt/qml/WINUX11/apps/TerminalApp.qml",
+            browser: "qrc:/qt/qml/WINUX11/apps/BrowserApp.qml",
+            explorer: "qrc:/qt/qml/WINUX11/apps/ExplorerApp.qml",
+            settings: "qrc:/qt/qml/WINUX11/apps/SettingsApp.qml",
+            taskmanager: "qrc:/qt/qml/WINUX11/apps/TaskManagerApp.qml",
+            editor: "qrc:/qt/qml/WINUX11/apps/TextEditorApp.qml",
+            calculator: "qrc:/qt/qml/WINUX11/apps/CalculatorApp.qml",
+            network: "qrc:/qt/qml/WINUX11/apps/NetworkApp.qml",
+            security: "qrc:/qt/qml/WINUX11/apps/SecurityApp.qml",
+            notifications: "qrc:/qt/qml/WINUX11/apps/NotificationsApp.qml",
+            about: "qrc:/qt/qml/WINUX11/apps/AboutApp.qml"
         }
-        return known[id] || "apps/GenericApp.qml"
+        return sources[id] || "qrc:/qt/qml/WINUX11/apps/GenericApp.qml"
     }
 
     Rectangle {
         anchors.fill: parent
-        color: "#52000000"
+        color: "#66000000"
     }
 
     GlassPanel {
         id: frame
-        width: Math.min(parent.width - 48, 1180)
-        height: Math.min(parent.height - 110, 700)
+        width: Math.min(parent.width - 72, 1180)
+        height: Math.min(parent.height - 132, 700)
         anchors.centerIn: parent
-        radius: 24
-        glassColor: "#F00A0E15"
-        borderColor: "#65FFFFFF"
+        radius: 26
+        glassColor: "#F20B1019"
+        borderColor: "#55FFFFFF"
         borderWidth: 1
 
         Rectangle {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
-            height: 58
-            radius: 24
-            color: "#18000000"
+            height: 62
+            radius: 26
+            color: "#16000000"
 
             Text {
-                x: 22
+                x: 24
                 anchors.verticalCenter: parent.verticalCenter
                 text: root.title
                 color: Theme.textPrimary
-                font.pixelSize: 16
+                font.pixelSize: 17
                 font.weight: Font.DemiBold
             }
 
-            Rectangle {
-                id: minimizeButton
-                width: 34
-                height: 34
-                anchors.right: closeButton.left
-                anchors.rightMargin: 6
-                anchors.verticalCenter: parent.verticalCenter
-                radius: 17
-                color: minMouse.containsMouse ? "#25FFFFFF" : "transparent"
-
-                Text {
-                    anchors.centerIn: parent
-                    text: "—"
-                    color: Theme.textPrimary
-                    font.pixelSize: 17
-                }
-
-                MouseArea {
-                    id: minMouse
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked: root.minimized()
-                }
+            Text {
+                x: 24
+                anchors.top: parent.verticalCenter
+                anchors.topMargin: 8
+                text: root.appId
+                color: Theme.textMuted
+                font.pixelSize: 9
+                visible: root.appId.length > 0
             }
 
-            Rectangle {
-                id: closeButton
-                width: 34
-                height: 34
+            Row {
                 anchors.right: parent.right
-                anchors.rightMargin: 12
+                anchors.rightMargin: 14
                 anchors.verticalCenter: parent.verticalCenter
-                radius: 17
-                color: closeMouse.containsMouse ? "#45E85A67" : "transparent"
+                spacing: 6
 
-                Text {
-                    anchors.centerIn: parent
-                    text: "×"
-                    color: Theme.textPrimary
-                    font.pixelSize: 22
+                Rectangle {
+                    width: 36
+                    height: 36
+                    radius: 12
+                    color: minMouse.containsMouse ? "#20FFFFFF" : "transparent"
+                    Text { anchors.centerIn: parent; text: "—"; color: Theme.textPrimary; font.pixelSize: 18 }
+                    MouseArea { id: minMouse; anchors.fill: parent; hoverEnabled: true; onClicked: root.minimized() }
                 }
 
-                MouseArea {
-                    id: closeMouse
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked: root.closed()
+                Rectangle {
+                    width: 36
+                    height: 36
+                    radius: 12
+                    color: closeMouse.containsMouse ? "#35E85A67" : "transparent"
+                    Text { anchors.centerIn: parent; text: "×"; color: Theme.textPrimary; font.pixelSize: 23 }
+                    MouseArea { id: closeMouse; anchors.fill: parent; hoverEnabled: true; onClicked: root.closed() }
                 }
             }
         }
@@ -118,17 +102,18 @@ Item {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
-            anchors.topMargin: 58
             anchors.bottom: parent.bottom
+            anchors.topMargin: 62
             source: root.appId.length > 0 ? root.appSource(root.appId) : ""
 
             onLoaded: {
-                if (item) {
-                    if (item.hasOwnProperty("appTitle"))
-                        item.appTitle = root.title
-                    if (item.hasOwnProperty("appId"))
-                        item.appId = root.appId
-                }
+                if (item && item.hasOwnProperty("appTitle"))
+                    item.appTitle = root.title
+            }
+
+            onStatusChanged: {
+                if (status === Loader.Error)
+                    console.log("WINUX11: failed to load app", root.appId, source)
             }
         }
     }

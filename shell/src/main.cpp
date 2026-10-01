@@ -37,7 +37,13 @@ public:
         if (!url.startsWith("http://") && !url.startsWith("https://"))
             url = "https://" + url;
 
-        const QStringList candidates = {"chromium", "chromium-browser", "google-chrome", "google-chrome-stable"};
+        const QStringList candidates = {
+            "chromium",
+            "chromium-browser",
+            "google-chrome",
+            "google-chrome-stable"
+        };
+
         for (const QString &browser : candidates) {
             if (QStandardPaths::findExecutable(browser).isEmpty())
                 continue;
@@ -70,7 +76,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("fileService", &fileService);
     engine.rootContext()->setContextProperty("calculatorService", &calculatorService);
 
-    engine.loadFromModule("WINUX11", "Main");
+    engine.load(QUrl(QStringLiteral("qrc:/qt/qml/WINUX11/Main.qml")));
+
     if (engine.rootObjects().isEmpty())
         return 1;
 

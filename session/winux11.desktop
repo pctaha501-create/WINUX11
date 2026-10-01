@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=WINUX11
+Comment=WINUX11 desktop session
+Exec=winux11-session
+Type=Application
+DesktopNames=WINUX11
+X-GDM-SessionRegisters=true

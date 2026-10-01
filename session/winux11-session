@@ -1,0 +1,15 @@
+#!/bin/sh
+set -eu
+
+export XDG_CURRENT_DESKTOP=WINUX11
+export XDG_SESSION_DESKTOP=WINUX11
+export XDG_CURRENT_SESSION_TYPE=wayland
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+
+if [ -e /dev/dri/card0 ]; then
+    export QT_QPA_PLATFORM=eglfs
+else
+    export QT_QPA_PLATFORM=wayland
+fi
+
+exec WINUX11Compositor --wayland-socket-name=winux11-0

@@ -47,7 +47,7 @@ Item {
                 color: "#12FFFFFF"
                 border.width: 1
                 border.color: "#22FFFFFF"
-                Text { x: 16; anchors.verticalCenter: parent.verticalCenter; text: "⌕   Search apps, settings and files"; color: Theme.textMuted; font.pixelSize: 12 }
+                Text { x: 16; anchors.verticalCenter: parent.verticalCenter; text: "⌕  Search apps, settings and files"; color: Theme.textMuted; font.pixelSize: 12 }
                 MouseArea { anchors.fill: parent; onClicked: root.searchRequested() }
             }
 
@@ -61,15 +61,16 @@ Item {
 
                 Repeater {
                     model: [
-                        {n:"Explorer",g:"▣",c:"explorer"},
+                        {n:"Explorer",g:"◫",c:"explorer"},
                         {n:"Browser",g:"◉",c:"browser"},
                         {n:"Terminal",g:">_",c:"terminal"},
                         {n:"Settings",g:"⚙",c:"settings"},
-                        {n:"Calculator",g:"＋",c:"calculator"},
+                        {n:"Calculator",g:"⌗",c:"calculator"},
                         {n:"Editor",g:"✎",c:"editor"},
-                        {n:"Network",g:"⌁",c:"network"},
+                        {n:"Network",g:"◌",c:"network"},
                         {n:"Security",g:"◈",c:"security"}
                     ]
+
                     delegate: Rectangle {
                         width: (parent.width - 30) / 4
                         height: 86
@@ -77,8 +78,9 @@ Item {
                         color: mouse.containsMouse ? "#1DFFFFFF" : "#0CFFFFFF"
                         border.width: 1
                         border.color: "#18FFFFFF"
+
                         Text { anchors.horizontalCenter: parent.horizontalCenter; y: 15; text: modelData.g; color: Theme.textPrimary; font.pixelSize: 24 }
-                        Text { anchors.horizontalCenter: parent.horizontalCenter; bottom: parent.bottom; bottomMargin: 14; text: modelData.n; color: Theme.textSecondary; font.pixelSize: 10 }
+                        Text { anchors.horizontalCenter: parent.horizontalCenter; anchors.bottom: parent.bottom; anchors.bottomMargin: 14; text: modelData.n; color: Theme.textSecondary; font.pixelSize: 10 }
                         MouseArea { id: mouse; anchors.fill: parent; hoverEnabled: true; onClicked: root.launch(modelData.c) }
                     }
                 }
@@ -97,7 +99,7 @@ Item {
                 height: 58
                 radius: 16
                 color: "#0CFFFFFF"
-                Text { x: 14; anchors.verticalCenter: parent.verticalCenter; text: "⚙  Finish WINUX11 setup"; color: Theme.textPrimary; font.pixelSize: 11 }
+                Text { x: 14; anchors.verticalCenter: parent.verticalCenter; text: "✨  Finish WINUX11 setup"; color: Theme.textPrimary; font.pixelSize: 11 }
                 Text { x: 14; anchors.verticalCenter: parent.verticalCenter; anchors.verticalCenterOffset: 16; text: "Review system preferences"; color: Theme.textMuted; font.pixelSize: 9 }
                 MouseArea { anchors.fill: parent; onClicked: root.launch("settings") }
             }

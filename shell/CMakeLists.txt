@@ -10,9 +10,6 @@ set(CMAKE_AUTOUIC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick)
 
-qt_policy(SET QTP0001 NEW)
-qt_policy(SET QTP0004 OLD)
-
 qt_add_executable(WINUX11Shell
     src/main.cpp
     src/services/SystemService.cpp

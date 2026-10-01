@@ -1,24 +1,32 @@
 # WINUX11
 
-WINUX11 is a personal Linux distribution and desktop environment project.
+WINUX11 is a Linux desktop distribution project with an original Windows 11-inspired user experience.
 
-## Direction
+## Current architecture
 
-WINUX11 is being built from scratch on top of Linux/Wayland with a custom Qt 6/QML shell. The target is a polished Windows 11-class desktop experience while keeping the implementation original.
+- Qt 6 desktop shell with dark glassmorphism UI.
+- Native Qt Wayland compositor foundation under `compositor/`.
+- XDG Shell support for native Wayland applications.
+- Compositor-managed window framing and movement.
+- WINUX11 session entrypoint under `session/`.
+- Reproducible CMake/Ninja debug and release presets.
+- GitHub Actions build validation.
 
-## Current foundation
+## Engineering rules
 
-- Custom Qt 6 shell
-- Floating taskbar
-- Start menu
-- Search surface
-- Desktop surface
-- Window-manager foundation
-- Native Linux application launching
-- Modular QML structure
+- User-facing application text is white and readable.
+- UI effects stay lightweight and deterministic.
+- Core features must be functional rather than visual placeholders.
+- Every project change is backed up before commit.
+- ISO generation is intentionally the final stage and is not part of the current build.
 
-Development is currently performed in an Ubuntu VirtualBox VM.
+## Roadmap
 
-## Repository
-
-This repository is private and is the source of the WINUX11 project.
+1. Stabilize compositor and CI.
+2. Integrate compositor-backed window management and desktop shell.
+3. Complete Explorer and core applications.
+4. Integrate a real browser engine.
+5. Complete system tools and security/network management.
+6. Integrate Wine/Proton compatibility.
+7. Finalize WINUX11 session.
+8. Build the WINUX11 ISO as the final stage.

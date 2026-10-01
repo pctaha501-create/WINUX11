@@ -25,35 +25,48 @@ qt_add_executable(WINUX11Shell
     src/services/CalculatorService.h
 )
 
+set(WINUX11_QML_FILES
+    src/Main.qml
+    src/AppWindow.qml
+    src/QuickSettings.qml
+    src/ui/Theme.qml
+    src/ui/GlassPanel.qml
+    src/ui/IconButton.qml
+    src/desktop/Desktop.qml
+    src/taskbar/Taskbar.qml
+    src/taskbar/TaskbarButton.qml
+    src/taskbar/SystemTray.qml
+    src/start/StartMenu.qml
+    src/search/Search.qml
+    src/windows/WindowManager.qml
+    src/shell/ShellState.qml
+    src/apps/TerminalApp.qml
+    src/apps/BrowserApp.qml
+    src/apps/ExplorerApp.qml
+    src/apps/SettingsApp.qml
+    src/apps/TaskManagerApp.qml
+    src/apps/TextEditorApp.qml
+    src/apps/CalculatorApp.qml
+    src/apps/NetworkApp.qml
+    src/apps/SecurityApp.qml
+    src/apps/NotificationsApp.qml
+    src/apps/AboutApp.qml
+)
+
+set_source_files_properties(src/Main.qml src/AppWindow.qml src/QuickSettings.qml PROPERTIES QT_RESOURCE_ALIAS ".")
+set_source_files_properties(src/ui/Theme.qml src/ui/GlassPanel.qml src/ui/IconButton.qml PROPERTIES QT_RESOURCE_ALIAS "ui")
+set_source_files_properties(src/desktop/Desktop.qml PROPERTIES QT_RESOURCE_ALIAS "desktop")
+set_source_files_properties(src/taskbar/Taskbar.qml src/taskbar/TaskbarButton.qml src/taskbar/SystemTray.qml PROPERTIES QT_RESOURCE_ALIAS "taskbar")
+set_source_files_properties(src/start/StartMenu.qml PROPERTIES QT_RESOURCE_ALIAS "start")
+set_source_files_properties(src/search/Search.qml PROPERTIES QT_RESOURCE_ALIAS "search")
+set_source_files_properties(src/windows/WindowManager.qml PROPERTIES QT_RESOURCE_ALIAS "windows")
+set_source_files_properties(src/shell/ShellState.qml PROPERTIES QT_RESOURCE_ALIAS "shell")
+set_source_files_properties(src/apps/TerminalApp.qml src/apps/BrowserApp.qml src/apps/ExplorerApp.qml src/apps/SettingsApp.qml src/apps/TaskManagerApp.qml src/apps/TextEditorApp.qml src/apps/CalculatorApp.qml src/apps/NetworkApp.qml src/apps/SecurityApp.qml src/apps/NotificationsApp.qml src/apps/AboutApp.qml PROPERTIES QT_RESOURCE_ALIAS "apps")
+
 qt_add_qml_module(WINUX11Shell
     URI WINUX11
     VERSION 1.0
-    QML_FILES
-        src/Main.qml
-        src/AppWindow.qml
-        src/QuickSettings.qml
-        src/ui/Theme.qml
-        src/ui/GlassPanel.qml
-        src/ui/IconButton.qml
-        src/desktop/Desktop.qml
-        src/taskbar/Taskbar.qml
-        src/taskbar/TaskbarButton.qml
-        src/taskbar/SystemTray.qml
-        src/start/StartMenu.qml
-        src/search/Search.qml
-        src/windows/WindowManager.qml
-        src/shell/ShellState.qml
-        src/apps/TerminalApp.qml
-        src/apps/BrowserApp.qml
-        src/apps/ExplorerApp.qml
-        src/apps/SettingsApp.qml
-        src/apps/TaskManagerApp.qml
-        src/apps/TextEditorApp.qml
-        src/apps/CalculatorApp.qml
-        src/apps/NetworkApp.qml
-        src/apps/SecurityApp.qml
-        src/apps/NotificationsApp.qml
-        src/apps/AboutApp.qml
+    QML_FILES \${WINUX11_QML_FILES}
     RESOURCES
         assets/icons/start.svg
         assets/icons/search.svg

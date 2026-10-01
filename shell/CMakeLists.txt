@@ -53,9 +53,9 @@ set(WINUX11_QML_FILES
     src/apps/AboutApp.qml
 )
 
-set_source_files_properties(src/Main.qml src/AppWindow.qml src/QuickSettings.qml PROPERTIES
-    QT_RESOURCE_ALIAS "."
-)
+set_source_files_properties(src/Main.qml PROPERTIES QT_RESOURCE_ALIAS "Main.qml")
+set_source_files_properties(src/AppWindow.qml PROPERTIES QT_RESOURCE_ALIAS "AppWindow.qml")
+set_source_files_properties(src/QuickSettings.qml PROPERTIES QT_RESOURCE_ALIAS "QuickSettings.qml")
 set_source_files_properties(src/ui/Theme.qml PROPERTIES QT_RESOURCE_ALIAS "ui/Theme.qml")
 set_source_files_properties(src/ui/GlassPanel.qml PROPERTIES QT_RESOURCE_ALIAS "ui/GlassPanel.qml")
 set_source_files_properties(src/ui/IconButton.qml PROPERTIES QT_RESOURCE_ALIAS "ui/IconButton.qml")
@@ -91,7 +91,6 @@ qt_add_qml_module(WINUX11Shell
         assets/icons/terminal.svg
         assets/icons/network.svg
         assets/icons/volume.svg
-        assets/icons/battery.svg
         assets/icons/bluetooth.svg
         assets/icons/moon.svg
         assets/icons/focus.svg

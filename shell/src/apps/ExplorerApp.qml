@@ -1,79 +1,18 @@
 import QtQuick
-import WINUX11 1.0
-
-Item {
-    id: root
-    property string currentPath: fileService.homePath()
-
-    Rectangle {
-        anchors.fill: parent
-        color: "#E8090D13"
-
-        Rectangle {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            height: 54
-            color: "#16000000"
-
-            Text {
-                x: 18
-                anchors.verticalCenter: parent.verticalCenter
-                text: currentPath
-                color: "#FFFFFF"
-                font.pixelSize: 14
-            }
-
-            Rectangle {
-                width: 72; height: 34
-                anchors.right: parent.right
-                anchors.rightMargin: 12
-                anchors.verticalCenter: parent.verticalCenter
-                radius: 12
-                color: Theme.accent
-                Text { anchors.centerIn: parent; text: "Refresh"; color: "#071018"; font.pixelSize: 11 }
-                MouseArea { anchors.fill: parent; onClicked: fileModel = fileService.list(currentPath) }
-            }
-        }
-
-        GridView {
-            id: files
-            anchors.fill: parent
-            anchors.topMargin: 70
-            anchors.margins: 18
-            cellWidth: 150
-            cellHeight: 105
-            model: fileModel
-
-            delegate: Rectangle {
-                width: 136
-                height: 92
-                radius: 18
-                color: mouse.containsMouse ? "#24FFFFFF" : "#13000000"
-                border.width: 1
-                border.color: "#20FFFFFF"
-
-                Text {
-                    anchors.centerIn: parent
-                    width: parent.width - 16
-                    text: modelData
-                    color: "#FFFFFF"
-                    horizontalAlignment: Text.AlignHCenter
-                    elide: Text.ElideMiddle
-                    font.pixelSize: 12
-                }
-
-                MouseArea {
-                    id: mouse
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onDoubleClicked: fileService.open(currentPath + "/" + modelData)
-                }
-            }
-        }
-    }
-
-    property var fileModel: []
-
-    Component.onCompleted: fileModel = fileService.list(currentPath)
-}
+import QtQuick.Controls
+Item{anchors.fill:parent;property string currentPath:fileService.homePath();property var entries:[]
+ function refresh(){entries=fileService.list(currentPath)}
+ Component.onCompleted:refresh()
+ Rectangle{anchors.fill:parent;radius:18;color:"#ee0b1018";border.color:"#55ffffff";border.width:1}
+ Column{anchors.fill:parent;anchors.margins:14;spacing:10
+  Row{width:parent.width;spacing:8
+   Button{text:"↑";onClicked:{var p=currentPath.split("/");if(p.length>1)p.pop();currentPath=p.join("/")||"/";refresh()}}
+   TextField{id:pathBox;width:parent.width-90;text:currentPath;color:"#ffffff";background:Rectangle{radius:9;color:"#331c2330";border.color:"#44ffffff"};onAccepted:{currentPath=text;refresh()}}
+   Button{text:"↻";onClicked:refresh()}
+  }
+  ListView{width:parent.width;height:parent.height-64;clip:true;model:entries
+   delegate:Rectangle{width:ListView.view.width;height:42;radius:8;color:mouse.containsMouse?"#22ffffff":"transparent"
+    Text{anchors.left:parent.left;anchors.leftMargin:12;anchors.verticalCenter:parent.verticalCenter;text:modelData;color:"#ffffff";elide:Text.ElideRight}
+    MouseArea{id:mouse;anchors.fill:parent;hoverEnabled:true;onDoubleClicked:fileService.open(currentPath+"/"+modelData)}
+   }}
+ }}

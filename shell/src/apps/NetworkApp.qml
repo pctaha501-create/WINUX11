@@ -1,28 +1,10 @@
 import QtQuick
-import WINUX11 1.0
-
-Item {
-    Rectangle {
-        anchors.fill: parent
-        color: "#E8080B10"
-
-        Text { x:24; y:20; text:"Network"; color:"#FFFFFF"; font.pixelSize:25; font.weight:Font.DemiBold }
-        Text { x:24; y:56; text:"Connectivity and adapter control"; color:Theme.textMuted; font.pixelSize:12 }
-
-        Rectangle {
-            x:24; y:100; width:parent.width-48; height:86; radius:18
-            color:"#14000000"; border.width:1; border.color:"#24FFFFFF"
-            Text { x:16; y:16; text:"Network"; color:"#FFFFFF"; font.pixelSize:13 }
-            Text { x:16; y:46; text:systemService.networkEnabled ? "Connected / enabled" : "Disabled"; color:systemService.networkEnabled ? Theme.success : Theme.danger; font.pixelSize:12 }
-            MouseArea { anchors.fill:parent; onClicked:systemService.toggleNetwork() }
-        }
-
-        Rectangle {
-            x:24; y:198; width:parent.width-48; height:86; radius:18
-            color:"#14000000"; border.width:1; border.color:"#24FFFFFF"
-            Text { x:16; y:16; text:"Bluetooth"; color:"#FFFFFF"; font.pixelSize:13 }
-            Text { x:16; y:46; text:systemService.bluetoothEnabled ? "Powered" : "Off"; color:systemService.bluetoothEnabled ? Theme.success : Theme.textMuted; font.pixelSize:12 }
-            MouseArea { anchors.fill:parent; onClicked:systemService.toggleBluetooth() }
-        }
-    }
-}
+import QtQuick.Controls
+Item{anchors.fill:parent
+ Rectangle{anchors.fill:parent;radius:18;color:"#ee0b1018";border.color:"#55ffffff";border.width:1}
+ Column{anchors.fill:parent;anchors.margins:24;spacing:14
+  Text{text:"Network";color:"#ffffff";font.pixelSize:26;font.bold:true}
+  Text{text:systemService.networkEnabled?"Network is enabled":"Network is disabled";color:"#ffffff"}
+  Row{spacing:10;Button{text:"Enable";onClicked:systemService.toggleNetwork()};Button{text:"Disable";onClicked:systemService.toggleNetwork()};Button{text:"Refresh";onClicked:systemService.refresh()}}
+  Text{text:"WINUX11 uses the native Linux network stack for actual interface management.";color:"#bfffffff";wrapMode:Text.WordWrap;width:parent.width}
+ }}
